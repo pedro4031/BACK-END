@@ -11,88 +11,68 @@ async function crearArchivo(nombre) {
 class contenedor {
   constructor(nombre) {
     crearArchivo(nombre);
+    this.nombre = nombre;
   }
 
-  save(producto) {
-    async function guardarProducto() {
-      try {
-        let data = await fs.promises.readFile("./productos.txt", "utf-8");
-        let arrayProductos = JSON.parse(data);
-        let ID = 0;
-        arrayProductos.forEach((prod) => {
-          prod.id > ID && (ID = prod.id);
-        });
-        producto.id = ID + 1;
-        arrayProductos.push(producto);
-        fs.promises.writeFile(
-          "./productos.txt",
-          JSON.stringify(arrayProductos)
-        );
-        console.log(`id del producto ingresado:${producto.id} `);
-      } catch (e) {
-        console.log(e);
-      }
+  async save(producto) {
+    try {
+      let data = await fs.promises.readFile(this.nombre, "utf-8");
+      let arrayProductos = JSON.parse(data);
+      let ID = 0;
+      arrayProductos.forEach((prod) => {
+        prod.id > ID && (ID = prod.id);
+      });
+      producto.id = ID + 1;
+      arrayProductos.push(producto);
+      fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
+      console.log(`id del producto ingresado:${producto.id} `);
+    } catch (e) {
+      console.log(e);
     }
-    guardarProducto();
   }
-  getById(id) {
-    async function encontrarProducto() {
-      try {
-        let data = await fs.promises.readFile("./productos.txt", "utf-8");
-        let arrayProductos = JSON.parse(data);
-        let producto = arrayProductos.filter((prod) => prod.id == id);
-        producto.length == 0 ? console.log(null) : console.log(...producto);
-      } catch (e) {
-        console.log(e);
-      }
+  async getById(id) {
+    try {
+      let data = await fs.promises.readFile(this.nombre, "utf-8");
+      let arrayProductos = JSON.parse(data);
+      let producto = arrayProductos.filter((prod) => prod.id == id);
+      producto.length == 0 ? console.log(null) : console.log(...producto);
+    } catch (e) {
+      console.log(e);
     }
-
-    encontrarProducto();
   }
-  getAll() {
-    async function mostrarProductos() {
-      try {
-        let data = await fs.promises.readFile("./productos.txt", "utf-8");
-        let arrayProductos = JSON.parse(data);
-        console.log(arrayProductos);
-      } catch (e) {
-        console.log(e);
-      }
+  async getAll() {
+    try {
+      let data = await fs.promises.readFile(this.nombre, "utf-8");
+      let arrayProductos = JSON.parse(data);
+      console.log(arrayProductos);
+    } catch (e) {
+      console.log(e);
     }
-    mostrarProductos();
   }
-  deleteById(id) {
-    async function eliminarProducto() {
-      try {
-        let data = await fs.promises.readFile("./productos.txt", "utf-8");
-        let arrayProductos = JSON.parse(data);
-        let indice = arrayProductos.findIndex((prod) => prod.id == id);
-        console.log(indice);
-        arrayProductos.splice(indice, indice + 1);
-        console.log(arrayProductos);
-        fs.promises.writeFile(
-          "./productos.txt",
-          JSON.stringify(arrayProductos)
-        );
-      } catch (e) {
-        console.log(e);
-      }
+  async deleteById(id) {
+    try {
+      let data = await fs.promises.readFile(this.nombre, "utf-8");
+      let arrayProductos = JSON.parse(data);
+      let indice = arrayProductos.findIndex((prod) => prod.id == id);
+      console.log(indice);
+      arrayProductos.splice(indice, indice + 1);
+      console.log(arrayProductos);
+      fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
+    } catch (e) {
+      console.log(e);
     }
-    eliminarProducto();
   }
-  deleteAll() {
-    async function borrarProductos() {
-      try {
-        fs.promises.writeFile("./productos.txt", JSON.stringify([]));
-      } catch (e) {
-        console.log(e);
-      }
+  async deleteAll() {
+    try {
+      fs.promises.writeFile(this.nombre, JSON.stringify([]));
+    } catch (e) {
+      console.log(e);
     }
-    borrarProductos();
   }
 }
 
 let Contenedor = new contenedor("productos.txt");
+
 setTimeout(() => {
   Contenedor.save({
     title: "agua",
