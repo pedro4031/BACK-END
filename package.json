@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "servidor back end",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedro4031/BACK-END.git"
+  },
+  "keywords": [
+    "servidor"
+  ],
+  "author": "pedro casabona",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedro4031/BACK-END/issues"
+  },
+  "homepage": "https://github.com/pedro4031/BACK-END#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

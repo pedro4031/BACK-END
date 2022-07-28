@@ -1,4 +1,7 @@
 const fs = require("fs");
+const express = require("express");
+const app = express();
+const PORT = 8080;
 
 class contenedor {
   constructor(nombre) {
@@ -35,9 +38,9 @@ class contenedor {
       let arrayProductosJSON = await this.getData();
       let arrayProductos = JSON.parse(arrayProductosJSON);
       let producto = arrayProductos.find((prod) => prod.id == ID);
-      console.log(producto);
+
       if (producto != undefined) {
-        console.log("El producto es:", producto);
+        return producto;
       } else console.log(null);
     } catch (e) {
       console.log(`No se logró buscar el objeto. Error: ${e}`);
@@ -78,8 +81,8 @@ class contenedor {
 
 async function test() {
   let Contenedor = new contenedor("productos");
-
-  Contenedor.getData();
+  await Contenedor.deleteAll();
+  await Contenedor.getData();
 
   await Contenedor.save({
     title: "agua",
@@ -93,9 +96,6 @@ async function test() {
     img: "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvalsegura.com%2Fwp-content%2Fuploads%2F2016%2F02%2Fcc-33cl.jpg&imgrefurl=https%3A%2F%2Fvalsegura.com%2Fcatalogo-interactivo%2Fcoca-cola-iberian-partners%2Frefrescos-y-energeticas-coca-cola-iberian-partners%2Fcoca-cola-35-cl-vidrio%2F&tbnid=GQzfgq4hCRpgtM&vet=12ahUKEwiplurY-oD5AhXgrZUCHQ4XDDAQMygIegUIARDzAQ..i&docid=cNBoORWaldaZpM&w=800&h=800&q=coca%20botella&ved=2ahUKEwiplurY-oD5AhXgrZUCHQ4XDDAQMygIegUIARDzAQ",
   });
 
-  await Contenedor.getAll();
-  await Contenedor.deleteAll();
-
   await Contenedor.save({
     title: "cerveza",
     price: 80,
@@ -108,10 +108,27 @@ async function test() {
     img: "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.freepik.com%2Fvector-gratis%2Fbarra-chocolate-paquete-blanco_1308-57644.jpg%3Fw%3D2000&imgrefurl=https%3A%2F%2Fwww.freepik.es%2Ffotos-vectores-gratis%2Fbarra-de-chocolate-dibujo&tbnid=GUbZsCfISDGuDM&vet=12ahUKEwjrkqHk5Ij5AhUcu5UCHQcgCXYQMyhDegUIARCMAQ..i&docid=TgP874NDq-2bQM&w=1993&h=2000&q=chocolate&ved=2ahUKEwjrkqHk5Ij5AhUcu5UCHQcgCXYQMyhDegUIARCMAQ",
   });
 
-  await Contenedor.getById(1);
+  const server = app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto: ${server.address().port}`);
+  });
+  server.on("error", (error) => console.log(`Error en el servidor: ${error}`));
 
-  await Contenedor.deleteById(1);
+  app.get("/", (req, res) => {
+    res.send({ mensaje: "Hola Mundo." });
+  });
 
-  await Contenedor.getAll();
+  app.get("/productos", (req, res) => {
+    Contenedor.getAll().then((resp) => {
+      res.send(resp);
+    });
+  });
+
+  app.get("/productoRandom", (req, res) => {
+    let NumRandom = Math.floor(Math.random() * 4) + 1;
+    console.log(NumRandom);
+    Contenedor.getById(NumRandom).then((resp) => {
+      res.send(resp);
+    });
+  });
 }
 test();
