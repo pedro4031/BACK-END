@@ -1,7 +1,6 @@
 const contenedor = require('./ClaseContenedor');
 const express = require('express');
 const { Router } = express;
-const { engine } = require('express-handlebars');
 const path = require('path');
 
 const app = express();
@@ -23,11 +22,8 @@ async function test() {
   });
 
   app.get('/products', (req, res) => {
-    res.render('products.pug', { title: 'listado de perros', products: productsHC });
-  });
-
-  app.get('/hello', (req, res) => {
-    res.render('hello.pug', { msg: 'un msg del perrito' });
+    console.log('aqui products');
+    res.render('pages/index', { title: 'listado de productos', products: productsHC });
   });
 
   router.get('/', (req, res) => {
@@ -84,7 +80,6 @@ async function test() {
   });
   server.on('error', (error) => console.log(`Error en el servidor: ${error}`));
 
-  app.set('view engine', 'pug');
-  app.set('views', './views');
+  app.set('view engine', 'ejs');
 }
 test();
