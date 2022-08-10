@@ -22,9 +22,12 @@ async function test() {
     res.sendFile(path.join(__dirname + '/public/index.html'));
   });
 
-  app.get('/', (req, res) => {
-    //sirve productslist.hbs en index.hbs (index.hbs es la plantilla por defecto donde arranca todo)
-    res.render('productslist', { products: productsHC, productsExist: true });
+  app.get('/products', (req, res) => {
+    res.render('products.pug', { title: 'listado de perros', products: productsHC });
+  });
+
+  app.get('/hello', (req, res) => {
+    res.render('hello.pug', { msg: 'un msg del perrito' });
   });
 
   router.get('/', (req, res) => {
@@ -81,16 +84,7 @@ async function test() {
   });
   server.on('error', (error) => console.log(`Error en el servidor: ${error}`));
 
-  app.set('view engine', 'hbs');
+  app.set('view engine', 'pug');
   app.set('views', './views');
-  app.engine(
-    'hbs',
-    engine({
-      extname: '.hbs',
-      defaultLayout: 'index.hbs',
-      layoutsDir: __dirname + '/views/layouts',
-      partialsDir: __dirname + '/views/partials',
-    })
-  );
 }
 test();
