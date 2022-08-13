@@ -1,8 +1,6 @@
 const contenedor = require('./ClaseContenedor');
 const express = require('express');
 const { Router } = express;
-const { engine } = require('express-handlebars');
-const path = require('path');
 
 const app = express();
 const router = Router();
@@ -19,21 +17,15 @@ async function test() {
   await Contenedor.getData();
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
-  });
-
-  app.get('/products', (req, res) => {
-    res.render('products.pug', { title: 'listado de perros', products: productsHC });
-  });
-
-  app.get('/hello', (req, res) => {
-    res.render('hello.pug', { msg: 'un msg del perrito' });
+    res.render('index.pug');
   });
 
   router.get('/', (req, res) => {
     try {
       Contenedor.getAll().then((resp) => {
-        res.json(resp);
+        let cond;
+        resp.length > 0 ? (cond = true) : (cond = false);
+        res.render('tabla.pug', { productos: resp, mostrar: cond });
       });
     } catch (e) {
       res.json({ mensaje: 'no se encontraron los productos', error: e });
@@ -54,7 +46,7 @@ async function test() {
   router.post('/', (req, res) => {
     try {
       let nuevoProd = req.body;
-      Contenedor.save(nuevoProd).then((resp) => res.json(resp));
+      Contenedor.save(nuevoProd).then(res.redirect('/api/productos/'));
     } catch (e) {
       res.json({ mensaje: 'no se pudo agregar el producto.', error: e });
     }
