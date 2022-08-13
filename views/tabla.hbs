@@ -2,17 +2,17 @@
 
 <div class="container text-center mx-auto mt-3">
 
-<h1 class="mb-3">Tabla de productos</h1>
+<h1 class="mb-3 letra-k">Tabla de productos</h1>
 {{#if mostrar}}
     <table class="table table-bordered table-secondary text-center align-middle">
-        <thead>
+        <thead class="letra-k">
             <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Precio</th>
             <th scope="col">Foto</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="letra-k-l">
             {{#each productos}}
             <tr>
             <td><h3>{{this.title}}</h3></td> 
@@ -23,7 +23,7 @@
         </tbody>
     </table>
     {{else}}
-    <div class="text-center">
+    <div class="text-center letra-k-l">
         <h2>Sin productos guardados</h2>
         <h3>Ingrese productos<a href="/">AQUÍ</a></h3>
     </div>
