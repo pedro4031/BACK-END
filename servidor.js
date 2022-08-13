@@ -10,8 +10,8 @@ const PORT = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/api/productos', router);
 app.use('/public', express.static(__dirname + '/public'));
+app.use('/api/productos', router);
 
 async function test() {
   let Contenedor = new contenedor('productos');
@@ -19,60 +19,27 @@ async function test() {
   await Contenedor.getData();
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/index.html'));
-  });
-
-  app.get('/', (req, res) => {
-    //sirve productslist.hbs en index.hbs (index.hbs es la plantilla por defecto donde arranca todo)
-    res.render('productslist', { products: productsHC, productsExist: true });
+    res.render('formulario');
   });
 
   router.get('/', (req, res) => {
     try {
       Contenedor.getAll().then((resp) => {
-        res.json(resp);
+        let cond;
+        resp.length > 0 ? (cond = true) : (cond = false);
+        res.render('tabla', { productos: resp, mostrar: cond });
       });
     } catch (e) {
       res.json({ mensaje: 'no se encontraron los productos', error: e });
     }
   });
 
-  router.get('/:id', (req, res) => {
-    try {
-      let ID = req.params.id;
-      Contenedor.getById(ID).then((resp) => {
-        res.json(resp);
-      });
-    } catch (e) {
-      res.json({ mensaje: 'no se pudo buscar el producto.', error: e });
-    }
-  });
-
   router.post('/', (req, res) => {
     try {
       let nuevoProd = req.body;
-      Contenedor.save(nuevoProd).then((resp) => res.json(resp));
+      Contenedor.save(nuevoProd).then(res.redirect('/api/productos/'));
     } catch (e) {
       res.json({ mensaje: 'no se pudo agregar el producto.', error: e });
-    }
-  });
-
-  router.put('/:id', async (req, res) => {
-    try {
-      let ID = req.params.id;
-      let cambio = req.body;
-      Contenedor.actualizar(ID, cambio).then((resp) => res.json(resp));
-    } catch (e) {
-      res.json({ mensaje: 'no se pudo actualizar el producto', error: e });
-    }
-  });
-
-  router.delete('/:id', async (req, res) => {
-    try {
-      let ID = req.params.id;
-      await Contenedor.deleteById(ID).then((data) => res.json(data));
-    } catch (e) {
-      res.json({ error: e });
     }
   });
 
