@@ -1,7 +1,6 @@
 const contenedor = require("./ClaseContenedor");
 const express = require("express");
 const { Router } = express;
-const path = require("path");
 
 const app = express();
 const router = Router();
