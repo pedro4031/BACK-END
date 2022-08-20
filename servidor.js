@@ -8,45 +8,30 @@ const app = express();
 const router = Router();
 const PORT = 8080;
 
+const httpServer = require('http').createServer(app);
+const io = require('socket.io')(httpServer);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/public', express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/productos', router);
 
 async function test() {
+  let chat = new contenedor('chat');
+  await chat.deleteAll();
+  await chat.getData();
+
   let Contenedor = new contenedor('productos');
   await Contenedor.deleteAll();
   await Contenedor.getData();
 
   app.get('/', (req, res) => {
-    res.render('formulario');
+    res.render('Elementos', { root: __dirname });
   });
 
-  router.get('/', (req, res) => {
-    try {
-      Contenedor.getAll().then((resp) => {
-        let cond;
-        resp.length > 0 ? (cond = true) : (cond = false);
-        res.render('tabla', { productos: resp, mostrar: cond });
-      });
-    } catch (e) {
-      res.json({ mensaje: 'no se encontraron los productos', error: e });
-    }
+  httpServer.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto: ${httpServer.address().port}`);
   });
-
-  router.post('/', (req, res) => {
-    try {
-      let nuevoProd = req.body;
-      Contenedor.save(nuevoProd).then(res.redirect('/api/productos/'));
-    } catch (e) {
-      res.json({ mensaje: 'no se pudo agregar el producto.', error: e });
-    }
-  });
-
-  const server = app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto: ${server.address().port}`);
-  });
-  server.on('error', (error) => console.log(`Error en el servidor: ${error}`));
 
   app.set('view engine', 'hbs');
   app.set('views', './views');
@@ -59,5 +44,17 @@ async function test() {
       partialsDir: __dirname + '/views/partials',
     })
   );
+
+  io.on('connection', (socket) => {
+    Contenedor.getAll().then((data) => io.sockets.emit('listaProds', data));
+    chat.getAll().then((data) => io.sockets.emit('chat', data));
+    socket.on('nuevoProd', (data) => {
+      Contenedor.save(data).then((datos) => Contenedor.getAll().then((data) => io.sockets.emit('listaProds', data)));
+    });
+
+    socket.on('nuevoMsg', (data) => {
+      chat.save(data).then((datos) => chat.getAll().then((data) => io.sockets.emit('chat', data)));
+    });
+  });
 }
 test();
