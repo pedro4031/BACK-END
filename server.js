@@ -43,18 +43,6 @@ async function test() {
 		}
 	});
 
-	app.get("*", (req, res) => {
-		let metodo = req.method;
-		let ruta = req.originalUrl;
-		res.json({ error: 404, descripcion: `ruta ${ruta} metodo ${metodo} no implementado.` });
-	});
-
-	app.post("*", (req, res) => {
-		let metodo = req.method;
-		let ruta = req.originalUrl;
-		res.json({ error: 404, descripcion: `ruta ${ruta} metodo ${metodo} no implementado.` });
-	});
-
 	// INICIO DE PRODUCTOS
 
 	const Productos = new contenedor("productos");
@@ -235,6 +223,12 @@ async function test() {
 	});
 
 	//FIN DE CARRITO
+
+	app.all("*", (req, res) => {
+		let metodo = req.method;
+		let ruta = req.originalUrl;
+		res.json({ error: 404, descripcion: `ruta ${ruta} metodo ${metodo} no implementado.` });
+	});
 
 	//PRENDER SERVER
 	const server = app.listen(PORT, () => {
