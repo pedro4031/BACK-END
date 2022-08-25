@@ -48,7 +48,7 @@ class carritos {
 			cart.productos = [...cart.productos, Prod];
 			await fs.promises.writeFile(`Carrito${id}`, JSON.stringify(cart));
 			return { mensaje: "Producto guardado." };
-		} catch (e) {
+		} catch (error) {
 			return { mensaje: "Ocurrió un error.", error: error };
 		}
 	}
