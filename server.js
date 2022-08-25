@@ -192,34 +192,54 @@ async function test() {
 	const Carritos = new carritos();
 
 	carrito.post("/", async (req, res) => {
-		await Carritos.crear(cantCarritos).then((resp) => {
-			cantCarritos++;
-			res.json(resp);
-		});
+		try {
+			await Carritos.crear(cantCarritos).then((resp) => {
+				cantCarritos++;
+				res.json(resp);
+			});
+		} catch (error) {
+			res.json({ mensaje: "No se pudo crear el carrito.", error: error });
+		}
 	});
 
 	carrito.delete("/:id", async (req, res) => {
-		const { id } = req.params;
-		await Carritos.deleteAll(id).then((resp) => res.json(resp));
+		try {
+			const { id } = req.params;
+			await Carritos.deleteAll(id).then((resp) => res.json(resp));
+		} catch (error) {
+			res.json({ mensaje: "No se pudo eliminar el carrito", error: error });
+		}
 	});
 	carrito.get("/:id/productos", async (req, res) => {
-		const { id } = req.params;
-		await Carritos.getAll(id).then((resp) => {
-			res.json(resp);
-		});
+		try {
+			const { id } = req.params;
+			await Carritos.getAll(id).then((resp) => {
+				res.json(resp);
+			});
+		} catch (error) {
+			res.json({ mensaje: "No se pudieron encontrar los productos/carrito.", error: error });
+		}
 	});
 	carrito.post("/:id/productos", async (req, res) => {
-		const idCart = req.params.id;
-		const IdProd = req.body.idProd;
+		try {
+			const idCart = req.params.id;
+			const IdProd = req.body.idProd;
 
-		await Productos.getById(IdProd).then((prod) =>
-			Carritos.save(idCart, prod).then((resp) => res.json(resp))
-		);
+			await Productos.getById(IdProd).then((prod) =>
+				Carritos.save(idCart, prod).then((resp) => res.json(resp))
+			);
+		} catch (error) {
+			res.json({ mensaje: "No se pudo guardar el producto", error: error });
+		}
 	});
 	carrito.delete("/:id/productos/:id_prod", async (req, res) => {
-		const { id, id_prod } = req.params;
+		try {
+			const { id, id_prod } = req.params;
 
-		await Carritos.deleteById(id, id_prod).then((resp) => res.json(resp));
+			await Carritos.deleteById(id, id_prod).then((resp) => res.json(resp));
+		} catch (error) {
+			res.json({ mensaje: "No se pudo borrar el producto.", error: error });
+		}
 	});
 
 	//FIN DE CARRITO
