@@ -22,12 +22,11 @@ class contenedor {
 			let arrayProductos = JSON.parse(arrayProductosJSON);
 			const indice = arrayProductos.map((prod) => prod.id).sort();
 			producto.id = indice[indice.length - 1] + 1 || 1;
-			console.log(producto.id);
 			arrayProductos.push(producto);
 			await fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
 			return producto;
 		} catch (e) {
-			console.log(`No se pudo guardar el objeto. Error:${e}`);
+			return { mensaje: "No se pudo guardar el objeto.", error: e };
 		}
 	}
 
@@ -39,9 +38,9 @@ class contenedor {
 
 			if (producto != undefined) {
 				return producto;
-			} else return { error: "producto no encontrado." };
+			} else return { error: "Producto no encontrado." };
 		} catch (e) {
-			console.log(`No se logró buscar el objeto. Error: ${e}`);
+			return { mensaje: "No se logró buscar el objeto.", error: e };
 		}
 	}
 	async deleteById(ID) {
@@ -66,7 +65,7 @@ class contenedor {
 			console.log(JSON.parse(arrayProductosJ));
 			return JSON.parse(arrayProductosJ);
 		} catch (e) {
-			console.log(`No se pudieron traer los productos. Error: ${e}`);
+			return { mensaje: "No se encontraron los productos.", Error: e };
 		}
 	}
 	async deleteAll() {
@@ -89,7 +88,7 @@ class contenedor {
 			await fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
 			return prodCambiado;
 		} catch (e) {
-			return { error: "no se pudo actualizar el producto..." };
+			return { mensaje: "no se pudo actualizar el producto", error: e };
 		}
 	}
 }
