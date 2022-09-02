@@ -1,94 +1,89 @@
-const fs = require('fs');
-
 class contenedor {
-  constructor(nombre) {
-    this.nombre = `./${nombre}.json`;
+  constructor(nombreTabla, config) {
+    this.tabla = nombreTabla;
+    this.config = config;
   }
 
-  async getData() {
+  async createTabla(tipo) {
+    const serverDB = this.config;
     try {
-      return await fs.promises.readFile(this.nombre, 'utf-8');
+      switch (tipo) {
+        case 'c':
+          await serverDB.schema
+            .hasTable(`${this.tabla}`)
+            .then(async (exists) => {
+              if (!exists) {
+                return await serverDB.schema
+                  .createTable(`${this.tabla}`, (c) => {
+                    c.increments('id');
+                    c.string('mail');
+                    c.string('FyH');
+                    c.text('mensaje');
+                  })
+                  .then((resp) => console.log('tabla chats:', resp));
+              }
+            })
+            .catch((e) => console.log(e));
+          break;
+
+        case 'p':
+          await serverDB.schema
+            .hasTable(`${this.tabla}`)
+            .then(async (exists) => {
+              if (!exists) {
+                return await serverDB.schema
+                  .createTable(`${this.tabla}`, (c) => {
+                    c.increments('id');
+                    c.string('title');
+                    c.integer('price');
+                    c.string('thumbnail');
+                  })
+                  .then((resp) => console.log('tabla productos:', resp));
+              }
+            })
+            .catch((e) => console.log(e));
+          break;
+        default:
+          res.json({ mensaje: 'tipo de tabla no valido.' });
+          break;
+      }
     } catch (e) {
-      if (e.code == 'ENOENT') {
-        await fs.promises.writeFile(this.nombre, '[]');
-        return await fs.promises.readFile(this.nombre, 'utf-8');
-      } else console.log('No se pudo crear el archivo.');
+      res.json({ mensaje: 'ocurrió un error para crear la tabla.', error: e });
     }
   }
 
   async save(producto) {
+    const serverDB = this.config;
     try {
-      let arrayProductosJSON = await this.getData();
-      let arrayProductos = JSON.parse(arrayProductosJSON);
-      const indice = arrayProductos.map((prod) => prod.id).sort();
-      producto.id = indice[indice.length - 1] + 1 || 1;
-
-      arrayProductos.push(producto);
-      await fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
-      return producto;
+      await serverDB(`${this.tabla}`)
+        .insert(producto)
+        .then((resp) => console.log('producto nuevo:', resp));
     } catch (e) {
       console.log(`No se pudo guardar el objeto. Error:${e}`);
     }
   }
 
-  async getById(ID) {
+  async getAll(tipo) {
+    const serverDB = this.config;
+
     try {
-      let arrayProductosJSON = await this.getData();
-      let arrayProductos = JSON.parse(arrayProductosJSON);
-      let producto = arrayProductos.find((prod) => prod.id == ID);
+      return await serverDB(`${this.tabla}`)
+        .select('*')
+        .then((arrayProds) => {
+          switch (tipo) {
+            case 'p':
+              arrayProds = arrayProds.map((prod) => ({ title: prod.title, price: prod.price, thumbnail: prod.thumbnail }));
+              break;
 
-      if (producto != undefined) {
-        return producto;
-      } else return { error: 'producto no encontrado.' };
-    } catch (e) {
-      console.log(`No se logró buscar el objeto. Error: ${e}`);
-    }
-  }
-  async deleteById(ID) {
-    try {
-      let arrayProductosJSON = await this.getData();
-      let arrayProductos = JSON.parse(arrayProductosJSON);
-      let indice = arrayProductos.findIndex((prod) => prod.id == ID);
-      if (indice != -1) {
-        arrayProductos.splice(indice, 1);
+            case 'c':
+              arrayProds = arrayProds.map((prod) => ({ mail: prod.mail, FyH: prod.FyH, mensaje: prod.mensaje }));
+              break;
+          }
 
-        await fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
-        return { mensaje: 'producto eliminado' };
-      } else return { mensaje: 'ID incorrecta. producto no encontrado.' };
-    } catch (e) {
-      console.log(`No se pudo eliminar el producto. Error: ${e}`);
-    }
-  }
-
-  async getAll() {
-    try {
-      const arrayProductosJ = await this.getData();
-
-      return JSON.parse(arrayProductosJ);
+          return arrayProds;
+        });
     } catch (e) {
       console.log(`No se pudieron traer los productos. Error: ${e}`);
-    }
-  }
-  async deleteAll() {
-    try {
-      await fs.promises.writeFile(this.nombre, '[]');
-    } catch (e) {
-      console.log(`No se pudo borrar el archivo. Error: ${e}`);
-    }
-  }
-
-  async actualizar(ID, cambio) {
-    try {
-      let prodOriginal = await this.getById(ID);
-      let prodCambiado = { ...prodOriginal, ...cambio };
-      await this.deleteById(ID);
-      let arrayProductosJSON = await this.getData();
-      let arrayProductos = JSON.parse(arrayProductosJSON);
-      arrayProductos.push(prodCambiado);
-      await fs.promises.writeFile(this.nombre, JSON.stringify(arrayProductos));
-      return prodCambiado;
-    } catch (e) {
-      return { error: 'no se pudo actualizar el producto...' };
     }
   }
 }

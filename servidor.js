@@ -4,26 +4,32 @@ const { Router } = express;
 const { engine } = require('express-handlebars');
 const path = require('path');
 
+//Express
 const app = express();
 const router = Router();
 const PORT = 8080;
-
-const httpServer = require('http').createServer(app);
-const io = require('socket.io')(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/productos', router);
 
-async function test() {
-  let chat = new contenedor('chat');
-  await chat.deleteAll();
-  await chat.getData();
+//Socket.io
+const httpServer = require('http').createServer(app);
+const io = require('socket.io')(httpServer);
 
-  let Contenedor = new contenedor('productos');
-  await Contenedor.deleteAll();
-  await Contenedor.getData();
+//Knex
+const { optionsM } = require('./options/mariaDB.js');
+const knexM = require('knex')(optionsM);
+const { optionsQ } = require('./options/sQlite3.js');
+const knexQ = require('knex')(optionsQ);
+
+async function test() {
+  let Chat = new contenedor('chat', knexQ);
+  await Chat.createTabla('c');
+
+  let Productos = new contenedor('productos', knexM);
+  await Productos.createTabla('p');
 
   app.get('/', (req, res) => {
     res.render('Elementos', { root: __dirname });
@@ -45,15 +51,17 @@ async function test() {
     })
   );
 
-  io.on('connection', (socket) => {
-    Contenedor.getAll().then((data) => io.sockets.emit('listaProds', data));
-    chat.getAll().then((data) => io.sockets.emit('chat', data));
+  io.on('connection', async (socket) => {
+    await Productos.getAll('p').then((data) => {
+      io.sockets.emit('listaProds', data);
+    });
+    await Chat.getAll('c').then((data) => io.sockets.emit('chat', data));
     socket.on('nuevoProd', (data) => {
-      Contenedor.save(data).then((datos) => Contenedor.getAll().then((data) => io.sockets.emit('listaProds', data)));
+      Productos.save(data).then((datos) => Productos.getAll('p').then((data) => io.sockets.emit('listaProds', data)));
     });
 
-    socket.on('nuevoMsg', (data) => {
-      chat.save(data).then((datos) => chat.getAll().then((data) => io.sockets.emit('chat', data)));
+    socket.on('nuevoMsg', async (data) => {
+      await Chat.save(data).then((datos) => Chat.getAll('c').then((data) => io.sockets.emit('chat', data)));
     });
   });
 }

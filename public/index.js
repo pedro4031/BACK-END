@@ -62,7 +62,7 @@ function enviarMsg(e) {
     const mail = document.querySelector('#mail');
     const date = new Date();
     const FyH = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    socket.emit('nuevoMsg', { title: mail.value, price: FyH, thumbnail: mensaje.value });
+    socket.emit('nuevoMsg', { mail: mail.value, FyH: FyH, mensaje: mensaje.value });
     mensaje.value = '';
   } else {
     alert('Mensaje vacío.');
@@ -72,7 +72,7 @@ function enviarMsg(e) {
 
 socket.on('chat', (data) => {
   let mensajes = data.reduce(
-    (html, msg) => html + `<div><p><strong class="text-primary">${msg.title}</strong> <span class="texto-marron"> [${msg.price}]</span> <em class="text-success">: ${msg.thumbnail}</em> </p></div>`,
+    (html, msg) => html + `<div><p><strong class="text-primary">${msg.mail}</strong> <span class="texto-marron"> [${msg.FyH}]</span> <em class="text-success">: ${msg.mensaje}</em> </p></div>`,
     ''
   );
   const chatBox = document.querySelector('#chat-box');
