@@ -16,7 +16,6 @@ async function test() {
 	let Contenedor = new contenedor("productos");
 	await Contenedor.deleteAll();
 	await Contenedor.getData();
-
 	await Contenedor.save({
 		title: "agua",
 		price: 50,
