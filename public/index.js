@@ -111,10 +111,11 @@ function enviarMsg(e) {
 
 socket.on('chat', (data) => {
   console.log(data);
-  console.log(JSON.stringify(data).length);
+  console.log('tamaño:', JSON.stringify(data).length);
   const dataOriginal = normalizr.denormalize(data.result, chat, data.entities);
-  console.log(JSON.stringify(dataOriginal).length);
+
   console.log(dataOriginal);
+  console.log('tamaño:', JSON.stringify(dataOriginal).length);
   let compresion = (JSON.stringify(dataOriginal).length / JSON.stringify(data).length) * 100 - 100;
 
   let mensajes = dataOriginal.mensajes.reduce(
@@ -127,7 +128,9 @@ socket.on('chat', (data) => {
   const compression = document.querySelector('#compression');
   chatBox.innerHTML = mensajes;
   chatBox.scrollTop = chatBox.scrollHeight;
-  compression.innerHTML = compresion.toString().slice(0, 5);
+  if (compresion >= 0) {
+    compression.innerHTML = compresion.toString().slice(0, 5);
+  }
 });
 
 //Chat de mensajes fin

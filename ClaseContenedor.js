@@ -104,7 +104,6 @@ class contenedor {
                 num++;
               });
               const chatNormalizado = normalize(chatOriginal, chat);
-              console.log(util.inspect(chatNormalizado, true, 5, true));
 
               return chatNormalizado;
               break;
