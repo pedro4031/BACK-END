@@ -4,6 +4,8 @@ const { Router } = express;
 const { engine } = require('express-handlebars');
 const path = require('path');
 
+const { faker } = require('@faker-js/faker');
+
 //Express
 const app = express();
 const router = Router();
@@ -18,7 +20,7 @@ app.use('/api/productos', router);
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
 
-//Knex
+//Knex y opciones de base de datos
 const { optionsM } = require('./options/mariaDB.js');
 const knexM = require('knex')(optionsM);
 const { optionsQ } = require('./options/sQlite3.js');
@@ -28,11 +30,27 @@ async function test() {
   let Chat = new contenedor('chat', knexQ);
   await Chat.createTabla('c');
 
-  let Productos = new contenedor('productos', knexM);
+  let Productos = new contenedor('productos', knexQ);
   await Productos.createTabla('p');
 
   app.get('/', (req, res) => {
     res.render('Elementos', { root: __dirname });
+  });
+
+  app.get('/api/productos-test', (req, res) => {
+    let productosRandom = [];
+
+    for (let i = 0; i < 5; i++) {
+      let prod = {};
+      const randomName = faker.commerce.product();
+      const randomPrice = faker.commerce.price(50, 10000);
+      const randomFoto = faker.image.food(150, 100, true);
+      prod.name = randomName;
+      prod.price = randomPrice;
+      prod.foto = randomFoto;
+      productosRandom.push(prod);
+    }
+    res.json(productosRandom);
   });
 
   httpServer.listen(PORT, () => {

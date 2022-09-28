@@ -5,6 +5,11 @@
   max-height: 100px;
 }
 
+.avatar-img {
+  max-width: 30px;
+  max-height: 30px;
+}
+
 nav,
 footer {
   background-color: #e95701;

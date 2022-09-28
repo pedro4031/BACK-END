@@ -1,10 +1,31 @@
 <div class='mx-auto mt-3 col-6' id='centroM'>
   <h1 class='mb-3 letra-k'>Centro de Mensajes</h1>
+  <h2>(Compresion: <span id='compression'>0</span>%)</h2>
   <form class='letra-k-l' onsubmit='return enviarMsg()'>
 
     <div class='mb-3'>
       <label for='mail' class='form-label'>E-mail</label>
       <input type='email' class='form-control' id='mail' required />
+    </div>
+    <div class='mb-3'>
+      <label for='nombre' class='form-label'>Nombre</label>
+      <input type='text' class='form-control' id='nombre' required />
+    </div>
+    <div class='mb-3'>
+      <label for='apellido' class='form-label'>Apellido</label>
+      <input type='text' class='form-control' id='apellido' required />
+    </div>
+    <div class='mb-3'>
+      <label for='edad' class='form-label'>Edad</label>
+      <input type='number' class='form-control' id='edad' required />
+    </div>
+    <div class='mb-3'>
+      <label for='alias' class='form-label'>Alias</label>
+      <input type='text' class='form-control' id='alias' required />
+    </div>
+    <div class='mb-3'>
+      <label for='avatar' class='form-label'>Avatar</label>
+      <input type='text' class='form-control' id='avatar' required />
     </div>
     <div class='mb-3'>
       <label for='mensaje' class='form-label'>Mensaje</label>
