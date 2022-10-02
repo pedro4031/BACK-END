@@ -38,3 +38,7 @@ footer {
   background-color: #2e343a;
   word-wrap: break-word;
 }
+
+.formulario-login {
+  width: 5rem;
+}

@@ -1,20 +1,52 @@
 const contenedor = require('./ClaseContenedor');
-const express = require('express');
-const { Router } = express;
-const { engine } = require('express-handlebars');
 const path = require('path');
-
-const { faker } = require('@faker-js/faker');
-
+const MongoStore = require('connect-mongo');
+const routerFaker = require('./routers/faker');
+const routerSession = require('./routers/sesiones');
 //Express
+const express = require('express');
 const app = express();
-const router = Router();
+const { engine } = require('express-handlebars');
+const session = require('express-session');
 const PORT = 8080;
 
+//Configuraciones App general
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api/productos', router);
+
+//Configuracion App sesiones
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: 'mongodb+srv://pedro4031:clave123@cluster0.cqyzzdp.mongodb.net/test',
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+    secret: 'claveSecreta123',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+      maxAge: 60000,
+    },
+  })
+);
+
+//Configuracion App motor de plantilla
+app.set('view engine', 'hbs');
+app.set('views', './views');
+app.engine(
+  'hbs',
+  engine({
+    extname: '.hbs',
+    defaultLayout: 'index.hbs',
+    layoutsDir: __dirname + '/views/layouts',
+    partialsDir: __dirname + '/views/partials',
+  })
+);
 
 //Socket.io
 const httpServer = require('http').createServer(app);
@@ -26,49 +58,38 @@ const knexM = require('knex')(optionsM);
 const { optionsQ } = require('./options/sQlite3.js');
 const knexQ = require('knex')(optionsQ);
 
+//Chequear sesion
+function checkSession(req, res, next) {
+  if (req.session?.nombre) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
 async function test() {
+  //creacion de contenedores/tablas
   let Chat = new contenedor('chat', knexQ);
   await Chat.createTabla('c');
 
   let Productos = new contenedor('productos', knexQ);
   await Productos.createTabla('p');
 
-  app.get('/', (req, res) => {
-    res.render('Elementos', { root: __dirname });
+  //RUTAS
+  app.get('/', checkSession, (req, res) => {
+    const nombre = req.session?.nombre;
+    res.render('Elementos', { root: __dirname, nombre });
   });
 
-  app.get('/api/productos-test', (req, res) => {
-    let productosRandom = [];
+  app.use(routerFaker);
+  app.use(routerSession);
 
-    for (let i = 0; i < 5; i++) {
-      let prod = {};
-      const randomName = faker.commerce.product();
-      const randomPrice = faker.commerce.price(50, 10000);
-      const randomFoto = faker.image.food(150, 100, true);
-      prod.name = randomName;
-      prod.price = randomPrice;
-      prod.foto = randomFoto;
-      productosRandom.push(prod);
-    }
-    res.json(productosRandom);
-  });
-
+  //Prender servidor
   httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto: ${httpServer.address().port}`);
   });
 
-  app.set('view engine', 'hbs');
-  app.set('views', './views');
-  app.engine(
-    'hbs',
-    engine({
-      extname: '.hbs',
-      defaultLayout: 'index.hbs',
-      layoutsDir: __dirname + '/views/layouts',
-      partialsDir: __dirname + '/views/partials',
-    })
-  );
-
+  //socket.io conexiones
   io.on('connection', async (socket) => {
     await Productos.getAll('p').then((data) => {
       io.sockets.emit('listaProds', data);

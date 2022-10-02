@@ -1,7 +1,7 @@
 const normalizr = require('normalizr');
 const schema = normalizr.schema;
 
-const authorSchema = new schema.Entity('Author');
+const authorSchema = new schema.Entity('Author', {}, { idAttribute: 'mail' });
 
 const textSchema = new schema.Entity('post');
 

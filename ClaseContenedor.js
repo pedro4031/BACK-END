@@ -92,7 +92,7 @@ class contenedor {
               arrayProds.forEach((msg) => {
                 let autor = { author: {}, text: {} };
 
-                autor.author.id = msg.mail;
+                autor.author.mail = msg.mail;
                 autor.author.nombre = msg.nombre;
                 autor.author.apellido = msg.apellido;
                 autor.author.edad = msg.edad;

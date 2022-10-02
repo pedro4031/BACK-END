@@ -1,0 +1,16 @@
+{{>navbar}}
+<div class='container my-4 p-5'>
+  <div class="bg-secondary p-4 rounded">
+    <h1 class='text-center'>Login de Usuario</h1>
+    <div class='formulario-login'></div>
+    <form action='/login' method='post' autocomplete='off'>
+      <div class='form-group'>
+        <label for='nombre' class="fst-italic">Ingrese su nombre:</label>
+        <input id='nombre' class='form-control' type='text' name='nombre' required />
+      </div>
+      <button class='btn btn-success mt-4'>Enviar</button>
+    </form>
+  </div>
+</div>
+
+{{>footer}}

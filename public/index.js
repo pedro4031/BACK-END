@@ -121,7 +121,7 @@ socket.on('chat', (data) => {
   let mensajes = dataOriginal.mensajes.reduce(
     (html, msg) =>
       html +
-      `<div><p><img src="${msg.author.avatar}" class="avatar-img rounded-circle pe-1"/><strong class="text-primary">${msg.author.id}</strong> <span class="texto-marron"> [${msg.text.id}]</span> <em class="text-success">: ${msg.text.mensaje}</em> </p></div>`,
+      `<div><p><img src="${msg.author.avatar}" class="avatar-img rounded-circle pe-1"/><strong class="text-primary">${msg.author.mail}</strong> <span class="texto-marron"> [${msg.text.id}]</span> <em class="text-success">: ${msg.text.mensaje}</em> </p></div>`,
     ''
   );
   const chatBox = document.querySelector('#chat-box');
