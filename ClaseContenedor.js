@@ -1,6 +1,6 @@
 const normalizr = require('normalizr');
 const normalize = normalizr.normalize;
-const chat = require('./schemas');
+const { chat } = require('./schemas');
 const util = require('util');
 
 class contenedor {
@@ -33,7 +33,9 @@ class contenedor {
                   .then((resp) => console.log('tabla chats:', resp));
               }
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+              throw new Error(`No se pudo crear la tabla, error: ${e}`);
+            });
           break;
 
         case 'p':
@@ -51,7 +53,9 @@ class contenedor {
                   .then((resp) => console.log('tabla productos:', resp));
               }
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+              throw new Error(`No se pudo crear la tabla, error: ${e}`);
+            });
           break;
         default:
           res.json({ mensaje: 'tipo de tabla no valido.' });
@@ -69,7 +73,7 @@ class contenedor {
         .insert(producto)
         .then((resp) => console.log('producto/mensaje nuevo:', resp));
     } catch (e) {
-      console.log(`No se pudo guardar el objeto. Error:${e}`);
+      throw new Error(`No se pudo guardar el objeto. Error:${e}`);
     }
   }
 
@@ -110,7 +114,7 @@ class contenedor {
           }
         });
     } catch (e) {
-      console.log(`No se pudieron traer los productos. Error: ${e}`);
+      throw new Error(`No se pudieron traer los productos. Error: ${e}`);
     }
   }
 }

@@ -38,8 +38,12 @@ function agregarRandom() {
   fetch('/api/productos-test')
     .then((data) => data.json())
     .then((resp) => {
-      for (let i = 0; i < 5; i++) {
-        socket.emit('nuevoProd', { title: resp[i].name, price: resp[i].price, thumbnail: resp[i].foto });
+      if (resp == 'logout') {
+        location.href = '/';
+      } else {
+        for (let i = 0; i < 5; i++) {
+          socket.emit('nuevoProd', { title: resp[i].name, price: resp[i].price, thumbnail: resp[i].foto });
+        }
       }
     });
 }
@@ -65,14 +69,16 @@ socket.on('listaProds', (data) => {
       <tbody class="letra-k-l" id="listaProds">`
     );
     html = html + `</tbody></table>`;
-    document.querySelector('#tablaProds').innerHTML = html;
+    let tablaDiv = document.querySelector('#tablaProds');
+    tablaDiv && (tablaDiv.innerHTML = html);
   } else {
     const html = `
     <div class="text-center letra-k-l">
         <h2>Sin productos guardados</h2>
         <h3>Ingrese productos en el formulario</h3>
     </div>`;
-    document.querySelector('#tablaProds').innerHTML = html;
+    let tablaDiv = document.querySelector('#tablaProds');
+    tablaDiv && (tablaDiv.innerHTML = html);
   }
 });
 
@@ -110,12 +116,8 @@ function enviarMsg(e) {
 }
 
 socket.on('chat', (data) => {
-  console.log(data);
-  console.log('tamaño:', JSON.stringify(data).length);
   const dataOriginal = normalizr.denormalize(data.result, chat, data.entities);
 
-  console.log(dataOriginal);
-  console.log('tamaño:', JSON.stringify(dataOriginal).length);
   let compresion = (JSON.stringify(dataOriginal).length / JSON.stringify(data).length) * 100 - 100;
 
   let mensajes = dataOriginal.mensajes.reduce(
@@ -126,10 +128,12 @@ socket.on('chat', (data) => {
   );
   const chatBox = document.querySelector('#chat-box');
   const compression = document.querySelector('#compression');
-  chatBox.innerHTML = mensajes;
-  chatBox.scrollTop = chatBox.scrollHeight;
-  if (compresion >= 0) {
-    compression.innerHTML = compresion.toString().slice(0, 5);
+  if (chatBox) {
+    chatBox.innerHTML = mensajes;
+    chatBox.scrollTop = chatBox.scrollHeight;
+    if (compresion >= 0) {
+      compression.innerHTML = compresion.toString().slice(0, 5);
+    }
   }
 });
 

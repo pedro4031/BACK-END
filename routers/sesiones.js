@@ -1,35 +1,26 @@
 const express = require('express');
 const { Router } = express;
-
+const passport = require('passport');
+const routes = require('./funciones');
 const routerSession = express.Router();
 
-routerSession.get('/login', (req, res) => {
-  const nombre = req.session?.nombre;
-  if (nombre) {
-    res.redirect('/');
-  } else {
-    res.render('Login');
-  }
-});
+//INDEX
+routerSession.get('/', routes.getRoot);
 
-routerSession.post('/login', (req, res) => {
-  req.session.nombre = req.body.nombre;
-  res.redirect('/');
-});
+//LOGIN
+routerSession.get('/login', routes.getLogin);
+routerSession.post('/login', passport.authenticate('login', { failureRedirect: '/failLogin', failureFlash: true }), routes.postLogin);
+routerSession.get('/failLogin', routes.getFailLogin);
 
-routerSession.get('/logout', (req, res) => {
-  const nombre = req.session?.nombre;
-  if (nombre) {
-    req.session.destroy((err) => {
-      if (!err) {
-        res.render('Logout', { nombre });
-      } else {
-        res.redirect('/');
-      }
-    });
-  } else {
-    res.redirect('/');
-  }
-});
+//SIGNUP
+routerSession.get('/signup', routes.getSignUp);
+routerSession.post('/signup', passport.authenticate('signup', { failureRedirect: '/failSignup', failureFlash: true }), routes.postSignUp);
+routerSession.get('/failSignup', routes.getFailSignUp);
+
+//LOGOUT
+routerSession.get('/logout', routes.getLogout);
+
+//FAIL ROUTE
+routerSession.get('*', routes.failRoute);
 
 module.exports = routerSession;

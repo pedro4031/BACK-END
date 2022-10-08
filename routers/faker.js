@@ -1,10 +1,10 @@
 const express = require('express');
 const { Router } = express;
 const { faker } = require('@faker-js/faker');
-
+const { checkAuthentication } = require('./funciones');
 const routerFaker = express.Router();
 
-routerFaker.get('/api/productos-test', (req, res) => {
+routerFaker.get('/api/productos-test', checkAuthentication, (req, res) => {
   let productosRandom = [];
 
   for (let i = 0; i < 5; i++) {

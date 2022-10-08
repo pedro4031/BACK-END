@@ -1,5 +1,6 @@
 const normalizr = require('normalizr');
 const schema = normalizr.schema;
+const mongoose = require('mongoose');
 
 const authorSchema = new schema.Entity('Author', {}, { idAttribute: 'mail' });
 
@@ -14,4 +15,11 @@ const chat = new schema.Entity('posts', {
   ],
 });
 
-module.exports = chat;
+const UsuarioSchema = new mongoose.Schema({
+  username: { type: String, required: true, max: 100 },
+  password: { type: String, required: true, max: 100 },
+});
+
+const Usuarios = mongoose.model('usuarios', UsuarioSchema);
+
+module.exports = { chat, Usuarios };
