@@ -1,5 +1,4 @@
 const express = require('express');
-const { Router } = express;
 const passport = require('passport');
 const routes = require('./funciones');
 const routerSession = express.Router();

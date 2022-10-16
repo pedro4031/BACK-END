@@ -4,7 +4,7 @@
   "description": "servidor back end",
   "main": "servidor.js",
   "scripts": {
-    "start": "nodemon servidor.js",
+    "start": "nodemon servidor.js --PORT 8000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,7 +35,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.1",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "yargs": "^17.6.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.5.0"

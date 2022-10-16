@@ -1,5 +1,4 @@
 const express = require('express');
-const { Router } = express;
 const { faker } = require('@faker-js/faker');
 const { checkAuthentication } = require('./funciones');
 const routerFaker = express.Router();

@@ -1,7 +1,6 @@
 const normalizr = require('normalizr');
 const normalize = normalizr.normalize;
 const { chat } = require('./schemas');
-const util = require('util');
 
 class contenedor {
   constructor(nombreTabla, config) {

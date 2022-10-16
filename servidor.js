@@ -1,10 +1,11 @@
-require('dotenv').config();
+const config = require('./config');
 const contenedor = require('./ClaseContenedor');
 const path = require('path');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const routerFaker = require('./routers/faker');
 const routerSession = require('./routers/sesiones');
+const routerFork = require('./routers/fork');
 const passport = require('./passportConfig');
 const flash = require('connect-flash');
 //Express
@@ -12,7 +13,6 @@ const express = require('express');
 const app = express();
 const { engine } = require('express-handlebars');
 const session = require('express-session');
-const PORT = 8080;
 
 //Configuraciones App general
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use(flash());
 //Configuracion Mongoose - verificar que se pueda conectar a la base de datos.
 
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(config.MONGODB_URL)
   .then(() => console.log('Base de datos mongoDB conectada'))
   .catch((e) => {
     console.error(e);
@@ -32,9 +32,9 @@ mongoose
 //Configuracion App sesiones
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
+    store: MongoStore.create({ mongoUrl: config.MONGODB_URL }),
 
-    secret: process.env.SESSION_CLAVE,
+    secret: config.SESSION_CLAVE,
 
     cookie: {
       httpOnly: false,
@@ -70,10 +70,10 @@ const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
 
 //Knex y opciones de base de datos
-const { optionsM } = require('./options/mariaDB.js');
-const knexM = require('knex')(optionsM);
-const { optionsQ } = require('./options/sQlite3.js');
-const knexQ = require('knex')(optionsQ);
+
+const knexM = require('knex')(config.OPTIONS_M);
+
+const knexQ = require('knex')(config.OPTIONS_Q);
 
 async function test() {
   //creacion de contenedores/tablas
@@ -86,10 +86,11 @@ async function test() {
   //RUTAS
 
   app.use(routerFaker);
+  app.use(routerFork);
   app.use(routerSession);
 
   //Prender servidor
-  httpServer.listen(PORT, () => {
+  httpServer.listen(config.PORT, () => {
     console.log(`Servidor escuchando en el puerto: ${httpServer.address().port}`);
   });
 
