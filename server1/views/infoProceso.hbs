@@ -1,0 +1,52 @@
+{{>navbar}}
+
+<div class='container my-4 p-5'>
+  <div class="bg-secondary p-4 rounded">
+    <h1 class='text-center mb-4'>Información del proceso</h1>
+    <table class="table table-light table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Argumentos de entrada</th>
+                <td>{{argEnt}}</td>
+            </tr>
+            <tr>
+                <th>Nombre de plataforma</th>
+                <td>{{sisOp}}</td>
+            </tr>
+            <tr>
+                <th>Versión de Node.js</th>
+                <td>{{Vnode}}</td>
+            </tr>
+            <tr>
+                <th>Memoria total reservada</th>
+                <td>{{mem}}</td>
+            </tr>
+            <tr>
+                <th>Path de ejecución</th>
+                <td>{{pathE}}</td>
+            </tr>
+            <tr>
+                <th>Process Id</th>
+                <td>{{pId}}</td>
+            </tr>
+            <tr>
+                <th>Carpeta del proyecto</th>
+                <td>{{carpeta}}</td>
+            </tr>
+            <tr>
+                <th>Cantidad de procesadores</th>
+                <td>{{CPUs}}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+  </div>
+</div>
+
+{{>footer}}
