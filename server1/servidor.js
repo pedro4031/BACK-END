@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+app.enable('trust proxy');
 //Configuracion Mongoose - verificar que se pueda conectar a la base de datos.
 
 mongoose
