@@ -4,14 +4,18 @@
   "description": "servidor back end",
   "main": "servidor.js",
   "scripts": {
-    "start": "nodemon servidor.js --PORT 8000",
+    "test": "node benchmark.js",
+    "start": "node servidor.js --PORT 8001",
     "start1": "nodemon servidor.js --PORT 8000 --modo fork",
     "start2": "nodemon servidor.js --PORT 8000 --modo cluster",
     "start3": "forever start servidor.js --watch --PORT 8000",
     "start4": "forever start servidor.js --watch --PORT 8000 --modo cluster",
     "start5": "pm2 start servidor.js  --name='serverPM2fork' --watch -- --PORT 8000 --modo fork ",
     "start6": "pm2 start servidor.js --name='serverPM2cluster' --watch -i max -- --PORT 8000 --modo fork",
-    "startproxy": " pm2 start servidor.js  --name='serverMain' --watch -- --PORT 8080 --modo fork && pm2 start servidor.js --name='serverRandomClusters' --watch -i max -- --PORT 8081 --modo fork && pm2 start servidor.js  --name='serverRandom1' --watch -- --PORT 8082 --modo fork && pm2 start servidor.js  --name='serverRandom2' --watch -- --PORT 8083 --modo fork && pm2 start servidor.js  --name='serverRandom3' --watch -- --PORT 8084 --modo fork && pm2 start servidor.js  --name='serverRandom4' --watch -- --PORT 8085 --modo fork "
+    "startproxy": " pm2 start servidor.js  --name='serverMain' --watch -- --PORT 8080 --modo fork && pm2 start servidor.js --name='serverRandomClusters' --watch -i max -- --PORT 8081 --modo fork && pm2 start servidor.js  --name='serverRandom1' --watch -- --PORT 8082 --modo fork && pm2 start servidor.js  --name='serverRandom2' --watch -- --PORT 8083 --modo fork && pm2 start servidor.js  --name='serverRandom3' --watch -- --PORT 8084 --modo fork && pm2 start servidor.js  --name='serverRandom4' --watch -- --PORT 8085 --modo fork ",
+    "startProfile": "node --prof servidor.js --PORT 8001",
+    "startInspect": "node --inspect servidor.js --PORT 8001",
+    "start0x": "0x servidor.js --PORT 8001"
   },
   "repository": {
     "type": "git",
@@ -27,7 +31,9 @@
   },
   "homepage": "https://github.com/pedro4031/BACK-END#readme",
   "dependencies": {
+    "autocannon": "^7.10.0",
     "bcrypt": "^5.1.0",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.3",
@@ -42,6 +48,7 @@
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.1",
     "sqlite3": "^5.0.2",
+    "winston": "^3.8.2",
     "yargs": "^17.6.0"
   },
   "devDependencies": {

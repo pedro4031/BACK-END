@@ -3,7 +3,8 @@ const contenedor = require('./ClaseContenedor');
 const path = require('path');
 const passport = require('./passportConfig');
 const flash = require('connect-flash');
-
+const compression = require('compression');
+const { loggerE } = require('./loger');
 //Cluster
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -17,14 +18,17 @@ const routerFork = require('./routers/fork');
 //Express
 const express = require('express');
 const app = express();
+
 const { engine } = require('express-handlebars');
 const session = require('express-session');
 
 //Configuraciones App general
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+
 app.enable('trust proxy');
 //Configuracion Mongoose - verificar que se pueda conectar a la base de datos.
 
@@ -32,14 +36,20 @@ mongoose
   .connect(config.MONGODB_URL)
   .then(() => console.log('mongoDB conectado'))
   .catch((e) => {
-    console.error(e);
+    loggerE.error(`no se pudo conectar a la base de datos. ${e}`);
     throw new Error('no se pudo conectar a la base de datos');
   });
 
 //Configuracion App sesiones
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: config.MONGODB_URL }),
+    store: MongoStore.create({
+      mongoUrl: config.MONGODB_URL,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
 
     secret: config.SESSION_CLAVE,
 
@@ -84,9 +94,9 @@ const knexQ = require('knex')(config.OPTIONS_Q);
 
 async function test() {
   //creacion de contenedores/tablas
+
   let Chat = new contenedor('chat', knexQ);
   await Chat.createTabla('c');
-
   let Productos = new contenedor('productos', knexQ);
   await Productos.createTabla('p');
 
@@ -101,7 +111,9 @@ async function test() {
     await Productos.getAll('p').then((data) => {
       io.sockets.emit('listaProds', data);
     });
+
     await Chat.getAll('c').then((data) => io.sockets.emit('chat', data));
+
     socket.on('nuevoProd', (data) => {
       Productos.save(data).then((datos) => Productos.getAll('p').then((data) => io.sockets.emit('listaProds', data)));
     });
@@ -124,14 +136,18 @@ async function test() {
       if (cluster.isMaster) {
         console.log(`Master ${process.pid} is running`);
 
-        for (let i = 0; i < numCPUs; i++) {
-          cluster.fork();
-        }
+        try {
+          for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+          }
 
-        cluster.on('exit', (worker, code, signal) => {
-          cluster.fork();
-          console.log(`worker ${worker.process.pid} died`);
-        });
+          cluster.on('exit', (worker, code, signal) => {
+            cluster.fork();
+            console.log(`worker ${worker.process.pid} died`);
+          });
+        } catch (e) {
+          loggerE.error(`no se pudiern crear los cluster. ${e}`);
+        }
       } else {
         httpServer.listen(config.PORT, () => {
           console.log(`Servidor escuchando en el puerto: ${httpServer.address().port}`);

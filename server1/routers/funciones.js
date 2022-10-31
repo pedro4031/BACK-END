@@ -1,7 +1,9 @@
 const config = require('../config');
 const { fork } = require('child_process');
+const { logger } = require('../loger');
 //INDEX
 function getRoot(req, res) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   if (req.isAuthenticated()) {
     const { username, password } = req.user;
     const user = { username, password };
@@ -12,6 +14,7 @@ function getRoot(req, res) {
 }
 //LOGIN
 function getLogin(req, res) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   if (req.isAuthenticated()) {
     res.redirect('/');
   } else {
@@ -20,6 +23,7 @@ function getLogin(req, res) {
 }
 
 function postLogin(req, res) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   res.redirect('/');
 }
 
@@ -30,6 +34,7 @@ function getFailLogin(req, res) {
 
 //SIGN UP
 function getSignUp(req, res) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   if (req.isAuthenticated()) {
     res.redirect('/');
   } else {
@@ -38,6 +43,7 @@ function getSignUp(req, res) {
 }
 
 function postSignUp(req, res) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   res.redirect('/');
 }
 
@@ -48,6 +54,7 @@ function getFailSignUp(req, res) {
 
 //LOGOUT
 function getLogout(req, res, next) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   if (req.user) {
     const { username, password } = req.user;
     const user = { username, password };
@@ -64,6 +71,7 @@ function getLogout(req, res, next) {
 
 //ERROR DE RUTA
 function failRoute(req, res) {
+  logger.warn(`peticion a ruta inexistente ${req.originalUrl} con metodo ${req.method}`);
   res.status(404).render('routing-error', {});
 }
 
@@ -78,11 +86,26 @@ function checkAuthentication(req, res, next) {
 
 //FUNCION INFO DEL PROCESO
 function getInfo(req, res) {
-  if (req.isAuthenticated()) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
+  if (true) {
     let argumentos = process.argv.slice(2);
     let rutaExe = process.argv0;
+    let cantCPU = require('os').cpus().length;
 
-    res.render('infoProceso', { argEnt: argumentos, sisOp: process.platform, Vnode: process.version, mem: process.memoryUsage().rss, pathE: rutaExe, pId: process.pid, carpeta: process.cwd() });
+    let info = {
+      argEnt: argumentos,
+      sisOp: process.platform,
+      Vnode: process.version,
+      mem: process.memoryUsage().rss,
+      pathE: rutaExe,
+      pId: process.pid,
+      carpeta: process.cwd(),
+      CPUs: cantCPU,
+    };
+
+    console.log(info);
+
+    res.render('infoProceso', info);
   } else {
     res.redirect('/');
   }
@@ -90,15 +113,10 @@ function getInfo(req, res) {
 
 //FUNCION CALCULAR NUMEROS ALEATORIOS
 function getRandom(req, res) {
+  logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
   if (req.isAuthenticated()) {
-    const protocol = req.protocol;
-    const host = req.hostname;
-    const url = req.originalUrl;
-    const port = config.PORT;
     const ApiRandom = fork('./apis/forkRandom.js');
-    const fullUrl = `${protocol}://${host}:${port}${url}`;
-
-    let parametro = parseInt(new URL(fullUrl).searchParams.get('cant'));
+    let parametro = req.query.cant;
 
     isNaN(parametro) ? ApiRandom.send(100000000) : ApiRandom.send(parametro);
 

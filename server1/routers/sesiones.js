@@ -21,5 +21,6 @@ routerSession.get('/logout', routes.getLogout);
 
 //FAIL ROUTE
 routerSession.get('*', routes.failRoute);
+routerSession.post('*', routes.failRoute);
 
 module.exports = routerSession;
