@@ -27,8 +27,8 @@ async function sendMail(asunto, cuerpo) {
 	}
 }
 
-const accountSid = "ACe52beaa637c530b8374c8a9174a77bce";
-const authToken = "fa0ec929327c3c600812292c41618d2d";
+const accountSid = config.SID;
+const authToken = config.AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 function sendWpp(destino, cuerpo) {
