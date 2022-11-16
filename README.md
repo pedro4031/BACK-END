@@ -1,5 +1,1 @@
-#Servidor Back-End con Express, MongoDB y FireBase.
-
-##Ecommerce.
-
-###Hecho por pedro casabona.
+# BACK-END / Handlebars - Express - MongoDB - MySql - sqlite - passport - socket.io

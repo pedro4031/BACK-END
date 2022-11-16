@@ -1,0 +1,57 @@
+.product-img {
+	width: 150px;
+	max-width: 150px;
+	height: 100px;
+	max-height: 100px;
+}
+
+.avatar-img {
+	max-width: 30px;
+	max-height: 30px;
+}
+
+nav,
+footer,
+.color-prin {
+	background-color: #e95701;
+}
+
+.letra-k {
+	font-family: "Kanit", sans-serif;
+	font-weight: 500;
+}
+
+.letra-k-l {
+	font-family: "Kanit", sans-serif;
+	font-weight: 300;
+}
+
+.texto-marron {
+	color: rgb(133, 70, 25);
+}
+
+#chat-box {
+	height: 20em;
+	line-height: 1em;
+	overflow-y: scroll;
+	width: 100%;
+	border: 1px solid;
+	background-color: #2e343a;
+	word-wrap: break-word;
+}
+
+.formulario-login {
+	width: 5rem;
+}
+
+.form-items-width {
+	max-width: 30rem;
+}
+
+.form-prefijo-width {
+	max-width: 4rem;
+}
+
+.fondo-width {
+	max-width: 40rem;
+}

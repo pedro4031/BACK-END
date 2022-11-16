@@ -1,0 +1,23 @@
+{{>navbar}}
+<div class='container my-4 p-5'>
+  <div class="bg-secondary mx-auto px-5 py-4 rounded col-6">
+    <h1 class='text-center'>Login de Usuario</h1>
+    <form action='/login' method='post' autocomplete='off'>
+        <div class='mb-3'>
+        <label for='mail' class="fst-italic">Ingrese su mail:</label>
+        <input id='mail' class='form-control' type='email' name='username' required />
+        </div>
+        <div class="mb-3">
+        <label for='contraseña' class="fst-italic">Ingrese su contraseña:</label>
+        <input id='contraseña' class='form-control' type='password' name='password' required />
+        </div>
+        
+      <button class='btn btn-success mt-4'>Enviar</button>
+    </form>
+    <div class="text-end">
+    <a class='btn btn-success' href='/signup'>SignUp</a>
+    </div>
+  </div>
+</div>
+
+{{>footer}}

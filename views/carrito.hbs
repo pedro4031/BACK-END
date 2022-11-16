@@ -1,0 +1,41 @@
+{{> navbar}}
+
+<div class="container text-center my-4 p-5">
+
+<table class="table table-striped table-bordered text-center align-middle">
+    <thead>
+        <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">NOMBRE</th>
+            <th scope="col">PRECIO POR UNIDAD</th>
+            <th scope="col">CANTIDAD</th>
+            <th scope="col">PRECIO x CANTIDAD</th>
+            <th scope="col">ELIMINAR PRODUCTO</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {{#if exists}}
+        {{#each productos}}
+        <tr id={{this._id}}>
+            <td >{{this._id}}</td>
+            <td >{{this.nombre}}</td>
+            <td >{{this.precio}}</td>
+            <td >{{this.cantidad}}</td>
+            <td class="precioCant">{{this.precioTotal}}</td>
+            <td ><button class=" btn btn-danger" onclick="eliminarCart('{{this._id}}')">X</button></td>
+        </tr>
+        {{/each}}
+        {{/if}}
+        <tr >
+            <th colspan="4" class="text-end pe-2 border-top border-end-0 border-start-0 border-2 border-dark">PRECIO TOTAL: $</th>
+            <td colspan="2" class="text-start  border-top border-end-0  border-2 border-dark"><span id="precioFinal">0</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="btn btn-success mt-3" id="comprar" disabled onclick="comprar()">COMPRAR</button>
+
+</div>
+
+{{> footer}}
+

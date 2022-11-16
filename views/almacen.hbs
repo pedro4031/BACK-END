@@ -1,0 +1,98 @@
+{{> navbar}}
+
+<div class="container text-center my-4 p-5">
+
+<div class="bg-secondary p-3 mx-auto rounded fondo-width">
+
+    <h2>agregar producto</h2>
+
+    <form action='' method='post' autocomplete='off' class="form-items-width mx-auto" onsubmit="return saveProd(event)">
+        <div class='mb-3 '>
+        <label for='categoria' class="fst-italic">Ingrese categoria:</label>
+        <input id='categoria' class='form-control' type='text'  required />
+        </div>
+        <div class='mb-3 '>
+        <label for='nombre' class="fst-italic">Ingrese nombre:</label>
+        <input id='nombre' class='form-control' type='text'  required />
+        </div>
+        <div class="mb-3 ">
+        <label for='descripcion' class="fst-italic">Ingrese descripción:</label>
+        <input id='descripcion' class='form-control' type='text'   required />
+        </div>
+        <div class="mb-3 ">
+        <label for='codigo' class="fst-italic">Ingrese codigo:</label>
+        <input id='codigo' class='form-control' type='text'  required />
+        </div>
+        <div class="mb-3 ">
+        <label for='foto' class="fst-italic">Ingrese foto:</label>
+        <input id='foto' class='form-control' type='text'  required />
+        </div>
+        <div class="mb-3 ">
+        <label for='precio' class="fst-italic">Ingrese precio:</label>
+        <input id='precio' class='form-control' type='number'  required />
+        </div>
+        <div class="mb-3 ">
+        <label for='stock' class="fst-italic">Ingrese stock:</label>
+        <input id='stock' class='form-control' type='number'  required />
+        </div>
+        <button class='btn btn-success mt-4'>Guardar</button>
+    </form>   
+</div>
+
+<div class="bg-secondary p-3 mx-auto mt-5 rounded fondo-width">
+
+<h2>actualizar producto</h2>  
+
+<form action='' method='post' autocomplete='off' class="form-items-width mx-auto" onsubmit="return updateProd(event)">
+        <div class='mb-3 '>
+        <label for='idProd' class="fst-italic">Ingrese ID de producto a modificar:</label>
+        <input id='idProd' class='form-control' type='text'  required />
+        </div>
+        <div class='mb-3 '>
+        <label for='N-categoria' class="fst-italic">Ingrese nueva categoria:</label>
+        <input id='N-categoria' class='form-control' type='text'   />
+        </div>
+        <div class='mb-3 '>
+        <label for='N-nombre' class="fst-italic">Ingrese nuevo nombre:</label>
+        <input id='N-nombre' class='form-control' type='text'   />
+        </div>
+        <div class="mb-3 ">
+        <label for='N-descripcion' class="fst-italic">Ingrese nueva descripción:</label>
+        <input id='N-descripcion' class='form-control' type='text'    />
+        </div>
+        <div class="mb-3 ">
+        <label for='N-codigo' class="fst-italic">Ingrese nuevo codigo:</label>
+        <input id='N-codigo' class='form-control' type='text'   />
+        </div>
+        <div class="mb-3 ">
+        <label for='N-foto' class="fst-italic">Ingrese nueva foto:</label>
+        <input id='N-foto' class='form-control' type='text'   />
+        </div>
+        <div class="mb-3 ">
+        <label for='N-precio' class="fst-italic">Ingrese nuevo precio:</label>
+        <input id='N-precio' class='form-control' type='number'   />
+        </div>
+        <div class="mb-3 ">
+        <label for='N-stock' class="fst-italic">Ingrese nuevo stock:</label>
+        <input id='N-stock' class='form-control' type='number'   />
+        </div>
+        <button class='btn btn-warning mt-4'>Actualizar</button>
+    </form>  
+</div>
+
+<div class="bg-secondary p-3 mx-auto mt-5 rounded fondo-width">
+
+<h2>borrar producto</h2>   
+
+<form action="" method='post' autocomplete='off' onsubmit="return deleteProd(event)">
+    <div class='mb-3 '>
+        <label for='D-idProd' class="fst-italic">Ingrese ID de producto a borrar:</label>
+        <input id='D-idProd' class='form-control' type='text'  required />
+        </div>
+        <button class='btn btn-danger mt-4'>Borrar</button>
+</form>
+</div>
+
+</div>
+
+{{> footer}}
