@@ -16,4 +16,8 @@ module.exports = {
 	CONTRASEÑA_MAIL: process.env.CONTRASENA_MAIL || undefined,
 
 	TELEFONO_NOTIFICACIONES: process.env.TELEFONO_NOTIFICACIONES || undefined,
+	
+	SID: process.env.SID || undefined,
+	
+	AUTH_TOKEN: process.env.AUTH_TOKEN || undefined,
 };
