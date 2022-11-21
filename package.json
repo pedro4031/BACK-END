@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "node benchmark.js",
 		"dev": "nodemon servidor.js",
-		"start": "node servidor.js --modo cluster",
+		"start": "node servidor.js ",
 		"start1": "nodemon servidor.js --PORT 8000 --modo fork",
 		"start2": "nodemon servidor.js --PORT 8000 --modo cluster",
 		"start3": "forever start servidor.js --watch --PORT 8000",

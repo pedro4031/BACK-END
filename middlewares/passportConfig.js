@@ -1,10 +1,10 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bCrypt = require("bcrypt");
-const { Usuarios } = require("./schemas");
-const carritoMongo = require("./controllers/daos/CarritosMongoDB");
-const { sendMail } = require("./nodemailerConfig");
-const { logger } = require("./loger");
+const Usuarios = require("../database/models/usuario");
+const { carritoMongo } = require("../database/imports");
+const { sendMail } = require("../utils/nodemailerConfig");
+const { logger } = require("../utils/loger");
 
 //fUNCIONES DE PASSPORT
 function isValidPassword(user, password) {

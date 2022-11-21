@@ -1,8 +1,8 @@
-const config = require("./config");
-const passport = require("./passportConfig");
+const config = require("./config/config");
+const passport = require("./middlewares/passportConfig");
 const flash = require("connect-flash");
 const compression = require("compression");
-const { loggerE, logger } = require("./loger");
+const { loggerE, logger } = require("./utils/loger");
 //Cluster
 const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
@@ -10,11 +10,11 @@ const numCPUs = require("os").cpus().length;
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 //Routers
-const routerFaker = require("./routers/faker");
-const routerSession = require("./routers/sesiones");
-const routerInfo = require("./routers/info");
-const routerProductos = require("./routers/productos");
-const routerCarritos = require("./routers/carritos");
+const routerCarritos = require("./routes/carritos");
+const routerFaker = require("./routes/faker");
+const routerProductos = require("./routes/productos");
+const routerSession = require("./routes/sesiones");
+const routerViews = require("./routes/views");
 //Express
 const express = require("express");
 const app = express();
@@ -92,9 +92,8 @@ async function test() {
 	app.use("/productos", routerProductos);
 	app.use("/carritos", routerCarritos);
 	app.use(routerFaker);
-	app.use(routerInfo);
 	app.use(routerSession);
-
+	app.use(routerViews);
 	//Prender servidor en diferentes modos
 
 	switch (config.MODO) {

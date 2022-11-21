@@ -1,9 +1,9 @@
 const { faker } = require("@faker-js/faker");
-const { checkAuthentication } = require("./funciones");
+const middlewares = require("../middlewares/imports");
 const routerFaker = require("express").Router();
-const { logger } = require("../loger");
+const { logger } = require("../utils/loger");
 
-routerFaker.get("/api/productos-test", checkAuthentication, (req, res) => {
+routerFaker.get("/api/productos-test", middlewares.checkAuthentication, (req, res) => {
 	logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
 	let productosRandom = [];
 

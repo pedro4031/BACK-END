@@ -1,7 +1,8 @@
 const { createTransport } = require("nodemailer");
-const config = require("./config");
+const config = require("../config/config");
 const { logger, loggerE } = require("./loger");
 
+//NODEMAILER
 const transporter = createTransport({
 	service: "gmail",
 	port: 587,
@@ -27,6 +28,7 @@ async function sendMail(asunto, cuerpo) {
 	}
 }
 
+//TWILIO (WHATSAPP)
 const accountSid = config.SID;
 const authToken = config.AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
@@ -39,6 +41,9 @@ function sendWpp(destino, cuerpo) {
 			to: `whatsapp:+${destino}`,
 		})
 		.then((message) => logger.info("Mensaje de whatsapp enviado." + message.sid))
+		.catch((e) => {
+			loggerE.error("No se pudo enviar el mensaje de whatsapp." + e);
+		})
 		.done();
 }
 

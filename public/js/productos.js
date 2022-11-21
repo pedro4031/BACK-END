@@ -9,19 +9,19 @@ function saveProd(e) {
 	let foto = e.target.foto.value;
 	let precio = e.target.precio.value;
 	let stock = e.target.stock.value;
-	if (precio.value < 0 || stock.value < 0) {
+	if (precio < 0 || stock < 0) {
 		alert("Los valores numericos no pueden ser negativos.");
 	} else {
 		let creacion = new Date().toISOString();
 		let nuevoProd = {
 			timestamp: creacion,
-			categoria: categoria.value,
-			nombre: nombre.value,
-			descripcion: descripcion.value,
-			codigo: codigo.value,
-			foto: foto.value,
-			precio: precio.value,
-			stock: stock.value,
+			categoria: categoria,
+			nombre: nombre,
+			descripcion: descripcion,
+			codigo: codigo,
+			foto: foto,
+			precio: precio,
+			stock: stock,
 		};
 		try {
 			fetch("/productos/", {
@@ -33,13 +33,14 @@ function saveProd(e) {
 			})
 				.then((data) => data.json())
 				.then((resp) => {
-					categoria.value = null;
-					nombre.value = null;
-					descripcion.value = null;
-					codigo.value = null;
-					foto.value = null;
-					precio.value = null;
-					stock.value = null;
+					categoria = null;
+					nombre = null;
+					descripcion = null;
+					codigo = null;
+					foto = null;
+					precio = null;
+					stock = null;
+
 					let respuesta = `${resp.error ? `error: ${resp.error}.` : ""} ${resp.mensaje}`;
 					alert(respuesta);
 				});
@@ -69,28 +70,24 @@ function updateProd(e) {
 
 		updatedProd.timestamp = actualizacion;
 
-		idProd.value != undefined && idProd.value != "" && (updatedProd.idProd = idProd.value);
+		idProd != undefined && idProd != "" && (updatedProd.idProd = idProd);
 
-		categoria.value != undefined &&
-			categoria.value != "" &&
-			(updatedProd.categoria = categoria.value);
+		categoria != undefined && categoria != "" && (updatedProd.categoria = categoria);
 
-		nombre.value != undefined && nombre.value != "" && (updatedProd.nombre = nombre.value);
+		nombre != undefined && nombre != "" && (updatedProd.nombre = nombre);
 
-		descripcion.value != undefined &&
-			descripcion.value != "" &&
-			(updatedProd.descripcion = descripcion.value);
+		descripcion != undefined && descripcion != "" && (updatedProd.descripcion = descripcion);
 
-		codigo.value != undefined && codigo.value != "" && (updatedProd.codigo = codigo.value);
+		codigo != undefined && codigo != "" && (updatedProd.codigo = codigo);
 
-		foto.value != undefined && foto.value != "" && (updatedProd.foto = foto.value);
+		foto != undefined && foto.value != "" && (updatedProd.foto = foto.value);
 
-		precio.value != undefined && precio.value != "" && (updatedProd.precio = precio.value);
+		precio != undefined && precio != "" && (updatedProd.precio = precio);
 
-		stock.value != undefined && stock.value != "" && (updatedProd.stock = stock.value);
+		stock != undefined && stock != "" && (updatedProd = stock);
 
 		try {
-			fetch(`/productos/${idProd.value}`, {
+			fetch(`/productos/${idProd}`, {
 				method: "PUT",
 				headers: {
 					"Content-type": "application/json",
@@ -99,14 +96,14 @@ function updateProd(e) {
 			})
 				.then((data) => data.json())
 				.then((resp) => {
-					idProd.value = null;
-					categoria.value = null;
-					nombre.value = null;
-					descripcion.value = null;
-					codigo.value = null;
-					foto.value = null;
-					precio.value = null;
-					stock.value = null;
+					idProd = null;
+					categoria = null;
+					nombre = null;
+					descripcion = null;
+					codigo = null;
+					foto = null;
+					precio = null;
+					stock = null;
 					let respuesta = `${resp.error ? `error: ${resp.error}.` : ""} ${resp.mensaje}`;
 					alert(respuesta);
 				});
@@ -122,7 +119,7 @@ function deleteProd(e) {
 	e.preventDefault();
 	let idProd = e.target["D-idProd"].value;
 	try {
-		fetch(`/productos/${idProd.value}`, {
+		fetch(`/productos/${idProd}`, {
 			method: "DELETE",
 			headers: {
 				"Content-type": "application/json",
@@ -130,7 +127,7 @@ function deleteProd(e) {
 		})
 			.then((data) => data.json())
 			.then((resp) => {
-				idProd.value = null;
+				idProd = null;
 				let respuesta = `${resp.error ? `error: ${resp.error}.` : ""} ${resp.mensaje}`;
 				alert(respuesta);
 			});
@@ -222,21 +219,30 @@ function filtros(e) {
 }
 
 window.onload = () => {
-	fetch("/carritos/productos")
-		.then((data) => data.json())
-		.then((prodsCart) => {
-			PRODUCTOSCART = prodsCart;
-			if (document.getElementById("productos")) {
-				fetch("/productos/")
-					.then((data) => data.json())
-					.then((resp) => {
-						PRODUCTOS = resp;
-						cargarProds(resp, prodsCart);
-						cargarCategorias(resp);
-					});
-			}
-		});
+	if (!document.getElementById("inicio")) {
+		fetch("/carritos/productos")
+			.then((data) => data.json())
+			.then((prodsCart) => {
+				PRODUCTOSCART = prodsCart;
+				if (document.getElementById("productos")) {
+					fetch("/productos/")
+						.then((data) => data.json())
+						.then((resp) => {
+							PRODUCTOS = resp;
+							cargarProds(resp, prodsCart);
+							cargarCategorias(resp);
 
-	if (document.getElementById("precioFinal")) calcularTotal();
-	cartStock();
+							let precioMaximo = PRODUCTOS.sort((min, max) => min.precio - max.precio)[
+								PRODUCTOS.length - 1
+							].precio;
+							document.getElementById("precioMax").max = precioMaximo;
+							document.getElementById("precioMax").value = precioMaximo;
+							document.getElementById("valorMax").innerHTML = precioMaximo;
+						});
+				}
+			});
+
+		if (document.getElementById("precioFinal")) calcularTotal();
+		cartStock();
+	}
 };
