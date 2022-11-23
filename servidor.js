@@ -1,8 +1,8 @@
 const config = require("./config/config");
-const passport = require("./middlewares/passportConfig");
+const { passport } = require("./src/middlewares/imports");
 const flash = require("connect-flash");
 const compression = require("compression");
-const { loggerE, logger } = require("./utils/loger");
+const { loggerE, logger } = require("./src/utils/loger");
 //Cluster
 const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
@@ -10,11 +10,11 @@ const numCPUs = require("os").cpus().length;
 const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 //Routers
-const routerCarritos = require("./routes/carritos");
-const routerFaker = require("./routes/faker");
-const routerProductos = require("./routes/productos");
-const routerSession = require("./routes/sesiones");
-const routerViews = require("./routes/views");
+const routerCarritos = require("./src/routes/carritos");
+const routerFaker = require("./src/routes/faker");
+const routerProductos = require("./src/routes/productos");
+const routerSession = require("./src/routes/sesiones");
+const routerViews = require("./src/routes/views");
 //Express
 const express = require("express");
 const app = express();
@@ -43,14 +43,14 @@ mongoose
 
 //Configuracion App motor de plantilla
 app.set("view engine", "hbs");
-app.set("views", "./views");
+app.set("views", "./src/views");
 app.engine(
 	"hbs",
 	engine({
 		extname: ".hbs",
 		defaultLayout: "index.hbs",
-		layoutsDir: __dirname + "/views/layouts",
-		partialsDir: __dirname + "/views/partials",
+		layoutsDir: __dirname + "/src/views/layouts",
+		partialsDir: __dirname + "/src/views/partials",
 	})
 );
 

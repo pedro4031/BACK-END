@@ -1,4 +1,4 @@
-const config = require("../config/config");
+const config = require("../../config/config");
 const { logger, loggerE } = require("../utils/loger");
 const { sendMail, sendWpp } = require("../utils/nodemailerConfig");
 const { carritoMongo, productosMongo } = require("../database/imports");

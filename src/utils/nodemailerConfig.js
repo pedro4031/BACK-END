@@ -1,5 +1,5 @@
 const { createTransport } = require("nodemailer");
-const config = require("../config/config");
+const config = require("../../config/config");
 const { logger, loggerE } = require("./loger");
 
 //NODEMAILER
