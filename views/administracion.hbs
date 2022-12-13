@@ -1,0 +1,58 @@
+<div class="text-center mb-5">
+	<h1 class="mt-2">Administracion de productos</h1>
+	<hr />
+	<h2>Agregar producto</h2>
+	<form method="post" class="mx-auto w-25" onsubmit="return saveProd(event)">
+		<div class="mb-3">
+			<label for="nombre" class="form-label">Nombre</label>
+			<input type="text" class="form-control" id="nombre" />
+		</div>
+		<div class="mb-3">
+			<label for="precio" class="form-label">Precio</label>
+			<input type="number" class="form-control" id="precio" />
+		</div>
+		<div class="mb-3">
+			<label for="stock" class="form-label">Stock</label>
+			<input type="number" class="form-control" id="stock" />
+		</div>
+		<div class="mb-3">
+			<label for="foto" class="form-label">Foto (URL)</label>
+			<input type="text" class="form-control" id="foto" />
+		</div>
+		<button type="submit" class="btn btn-primary">Agregar</button>
+	</form>
+	<hr />
+	<h2>Actualizar producto</h2>
+	<form method="post" class="mx-auto w-25" onsubmit="return updateProd(event)">
+		<div class="mb-3">
+			<label for="idprod" class="form-label">ID del producto</label>
+			<input type="text" class="form-control" id="idprod" />
+		</div>
+		<div class="mb-3">
+			<label for="nombre" class="form-label">Nombre</label>
+			<input type="text" class="form-control" id="nombre-u" />
+		</div>
+		<div class="mb-3">
+			<label for="precio" class="form-label">Precio</label>
+			<input type="number" class="form-control" id="precio-u" />
+		</div>
+		<div class="mb-3">
+			<label for="stock" class="form-label">Stock</label>
+			<input type="number" class="form-control" id="stock-u" />
+		</div>
+		<div class="mb-3">
+			<label for="foto" class="form-label">Foto (URL)</label>
+			<input type="text" class="form-control" id="foto-u" />
+		</div>
+		<button type="submit" class="btn btn-primary">Actualizar</button>
+	</form>
+	<hr />
+	<h2>Borrar producto</h2>
+	<form method="post" class="mx-auto w-25" onsubmit="return deleteProd(event)">
+		<div class="mb-3">
+			<label for="idprod-B" class="form-label">ID del producto</label>
+			<input type="text" class="form-control" id="idprod-B" />
+		</div>
+		<button type="submit" class="btn btn-primary">Borrar</button>
+	</form>
+</div>
