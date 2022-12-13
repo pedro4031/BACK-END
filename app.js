@@ -17,7 +17,7 @@ const {
 
 const mongoose = require("mongoose");
 mongoose
-	.connect("mongodb+srv://pedro4031:coder123@cluster0.cqyzzdp.mongodb.net/test2")
+	.connect("INSERTAR DB AQUI")
 	.then(() => console.log("mongoDB conectado"))
 	.catch((e) => {
 		console.error(`no se pudo conectar a la base de datos. ${e}`);
