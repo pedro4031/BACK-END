@@ -2,26 +2,33 @@ let PRODUCTOS = [];
 
 function saveProd(e) {
 	e.preventDefault();
-	let categoria = e.target.categoria.value;
-	let nombre = e.target.nombre.value;
-	let descripcion = e.target.descripcion.value;
-	let codigo = e.target.codigo.value;
-	let foto = e.target.foto.value;
-	let precio = e.target.precio.value;
-	let stock = e.target.stock.value;
+	let categoria = e.target.categoria;
+	let nombre = e.target.nombre;
+	let descripcion = e.target.descripcion;
+	let codigo = e.target.codigo;
+	let foto = e.target.foto;
+	let precio = e.target.precio;
+	let stock = e.target.stock;
 	if (precio < 0 || stock < 0) {
-		alert("Los valores numericos no pueden ser negativos.");
+		Toastify({
+			text: "Los valores numericos no pueden ser negativos",
+			duration: 1000,
+			gravity: "top",
+			position: "center",
+			stopOnFocus: true,
+			style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+		}).showToast();
 	} else {
 		let creacion = new Date().toISOString();
 		let nuevoProd = {
 			timestamp: creacion,
-			categoria: categoria,
-			nombre: nombre,
-			descripcion: descripcion,
-			codigo: codigo,
-			foto: foto,
-			precio: precio,
-			stock: stock,
+			categoria: categoria.value,
+			nombre: nombre.value,
+			descripcion: descripcion.value,
+			codigo: codigo.value,
+			foto: foto.value,
+			precio: precio.value,
+			stock: stock.value,
 		};
 		try {
 			fetch("/productos/", {
@@ -33,19 +40,33 @@ function saveProd(e) {
 			})
 				.then((data) => data.json())
 				.then((resp) => {
-					categoria = null;
-					nombre = null;
-					descripcion = null;
-					codigo = null;
-					foto = null;
-					precio = null;
-					stock = null;
+					categoria.value = null;
+					nombre.value = null;
+					descripcion.value = null;
+					codigo.value = null;
+					foto.value = null;
+					precio.value = null;
+					stock.value = null;
 
 					let respuesta = `${resp.error ? `error: ${resp.error}.` : ""} ${resp.mensaje}`;
-					alert(respuesta);
+					Toastify({
+						text: respuesta,
+						duration: 1000,
+						gravity: "top",
+						position: "center",
+						stopOnFocus: true,
+						style: { background: "linear-gradient(to right, #009FFD, #2A2A72)" },
+					}).showToast();
 				});
 		} catch (error) {
-			alert("no se pudo guardar el producto intentelo de nuevo...");
+			Toastify({
+				text: "no se pudo guardar el producto intentelo de nuevo...",
+				duration: 1000,
+				gravity: "top",
+				position: "center",
+				stopOnFocus: true,
+				style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+			}).showToast();
 		}
 	}
 
@@ -54,40 +75,51 @@ function saveProd(e) {
 
 function updateProd(e) {
 	e.preventDefault();
-	let idProd = e.target.idProd.value;
-	let categoria = e.target["N-categoria"].value;
-	let nombre = e.target["N-nombre"].value;
-	let descripcion = e.target["N-descripcion"].value;
-	let codigo = e.target["N-codigo"].value;
-	let foto = e.target["N-foto"].value;
-	let precio = e.target["N-precio"].value;
-	let stock = e.target["N-stock"].value;
+	let idProd = e.target.idProd;
+	let categoria = e.target["N-categoria"];
+	let nombre = e.target["N-nombre"];
+	let descripcion = e.target["N-descripcion"];
+	let codigo = e.target["N-codigo"];
+	let foto = e.target["N-foto"];
+	let precio = e.target["N-precio"];
+	let stock = e.target["N-stock"];
 	if (precio.value < 0 || stock.value < 0) {
-		alert("Los valores numericos no pueden ser negativos.");
+		Toastify({
+			text: "Los valores numericos no pueden ser negativos.",
+			duration: 1000,
+			gravity: "top",
+			position: "center",
+			stopOnFocus: true,
+			style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+		}).showToast();
 	} else {
 		let actualizacion = new Date().toISOString();
 		let updatedProd = {};
 
 		updatedProd.timestamp = actualizacion;
 
-		idProd != undefined && idProd != "" && (updatedProd.idProd = idProd);
+		idProd.value != undefined && idProd.value != "" && (updatedProd.idProd = idProd.value);
 
-		categoria != undefined && categoria != "" && (updatedProd.categoria = categoria);
+		categoria.value != undefined &&
+			categoria.value != "" &&
+			(updatedProd.categoria = categoria.value);
 
-		nombre != undefined && nombre != "" && (updatedProd.nombre = nombre);
+		nombre.value != undefined && nombre.value != "" && (updatedProd.nombre = nombre.value);
 
-		descripcion != undefined && descripcion != "" && (updatedProd.descripcion = descripcion);
+		descripcion.value != undefined &&
+			descripcion.value != "" &&
+			(updatedProd.descripcion = descripcion.value);
 
-		codigo != undefined && codigo != "" && (updatedProd.codigo = codigo);
+		codigo.value != undefined && codigo.value != "" && (updatedProd.codigo = codigo.value);
 
-		foto != undefined && foto.value != "" && (updatedProd.foto = foto.value);
+		foto.value != undefined && foto.value != "" && (updatedProd.foto = foto.value);
 
-		precio != undefined && precio != "" && (updatedProd.precio = precio);
+		precio.value != undefined && precio.value != "" && (updatedProd.precio = precio.value);
 
-		stock != undefined && stock != "" && (updatedProd = stock);
+		stock.value != undefined && stock.value != "" && (updatedProd = stock.value);
 
 		try {
-			fetch(`/productos/${idProd}`, {
+			fetch(`/productos/${idProd.value}`, {
 				method: "PUT",
 				headers: {
 					"Content-type": "application/json",
@@ -96,19 +128,33 @@ function updateProd(e) {
 			})
 				.then((data) => data.json())
 				.then((resp) => {
-					idProd = null;
-					categoria = null;
-					nombre = null;
-					descripcion = null;
-					codigo = null;
-					foto = null;
-					precio = null;
-					stock = null;
+					idProd.value = null;
+					categoria.value = null;
+					nombre.value = null;
+					descripcion.value = null;
+					codigo.value = null;
+					foto.value = null;
+					precio.value = null;
+					stock.value = null;
 					let respuesta = `${resp.error ? `error: ${resp.error}.` : ""} ${resp.mensaje}`;
-					alert(respuesta);
+					Toastify({
+						text: respuesta,
+						duration: 1000,
+						gravity: "top",
+						position: "center",
+						stopOnFocus: true,
+						style: { background: "linear-gradient(to right, #009FFD, #2A2A72)" },
+					}).showToast();
 				});
 		} catch (error) {
-			alert("no se pudo actualizar el producto intentelo de nuevo...");
+			Toastify({
+				text: "no se pudo actualizar el producto intentelo de nuevo...",
+				duration: 1000,
+				gravity: "top",
+				position: "center",
+				stopOnFocus: true,
+				style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+			}).showToast();
 		}
 	}
 
@@ -117,9 +163,9 @@ function updateProd(e) {
 
 function deleteProd(e) {
 	e.preventDefault();
-	let idProd = e.target["D-idProd"].value;
+	let idProd = e.target["D-idProd"];
 	try {
-		fetch(`/productos/${idProd}`, {
+		fetch(`/productos/${idProd.value}`, {
 			method: "DELETE",
 			headers: {
 				"Content-type": "application/json",
@@ -127,12 +173,26 @@ function deleteProd(e) {
 		})
 			.then((data) => data.json())
 			.then((resp) => {
-				idProd = null;
+				idProd.value = null;
 				let respuesta = `${resp.error ? `error: ${resp.error}.` : ""} ${resp.mensaje}`;
-				alert(respuesta);
+				Toastify({
+					text: respuesta,
+					duration: 1000,
+					gravity: "top",
+					position: "center",
+					stopOnFocus: true,
+					style: { background: "linear-gradient(to right, #009FFD, #2A2A72)" },
+				}).showToast();
 			});
 	} catch (e) {
-		alert("no se pudo borrar el producto intentelo de nuevo...");
+		Toastify({
+			text: "no se pudo borrar el producto intentelo de nuevo...",
+			duration: 1000,
+			gravity: "top",
+			position: "center",
+			stopOnFocus: true,
+			style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+		}).showToast();
 	}
 }
 
@@ -169,6 +229,9 @@ async function cargarProds(listaProds, cartProds) {
 					<i id=${prod._id} class="fa-solid fa-cart-arrow-down ms-3 user-select-none" style="color:#e95701" type="button" onclick="agregarCart(event)"></i>`
 				}
 					
+				</li>
+				<li class="list-group-item">
+					${prod._id}
 				</li>
 			</ul>
 			</div></div>`;

@@ -20,7 +20,14 @@ function agregarCart(e) {
 	let idProd = e.target.id;
 	let cantProd = parseInt(e.target.previousElementSibling.previousElementSibling.innerHTML);
 	if (cantProd == 0) {
-		alert("cantidad inválida");
+		Toastify({
+			text: "cantidad inválida",
+			duration: 1000,
+			gravity: "top",
+			position: "center",
+			stopOnFocus: true,
+			style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+		}).showToast();
 	} else {
 		let cartProd = { idProd, cantProd };
 		fetch("/carritos/productos", {
@@ -33,9 +40,23 @@ function agregarCart(e) {
 			.then((data) => data.json())
 			.then((resp) => {
 				if (resp.mensaje != "producto guardado") {
-					alert("no se pudo guardar el producto en el carrito.");
+					Toastify({
+						text: "no se pudo guardar el producto en el carrito",
+						duration: 1000,
+						gravity: "top",
+						position: "center",
+						stopOnFocus: true,
+						style: { background: "linear-gradient(to right, #FE5F75, #FC9842)" },
+					}).showToast();
 				} else {
-					alert(" producto guardado en el carrito.");
+					Toastify({
+						text: "producto guardado en el carrito",
+						duration: 1000,
+						gravity: "top",
+						position: "center",
+						stopOnFocus: true,
+						style: { background: "linear-gradient(to right, #009FFD, #2A2A72)" },
+					}).showToast();
 					e.target.parentElement.innerHTML = "producto en carrito";
 					cartStock();
 				}
@@ -74,9 +95,23 @@ function eliminarCart(ID) {
 		.then((data) => data.json())
 		.then((resp) => {
 			if (resp.mensaje != "producto borrado") {
-				alert("no se pudo borrar el producto del carrito.");
+				Toastify({
+					text: "no se pudo borrar el producto del carrito",
+					duration: 1000,
+					gravity: "top",
+					position: "center",
+					stopOnFocus: true,
+					style: { background: "linear-gradient(to right, #009FFD, #2A2A72)" },
+				}).showToast();
 			} else {
-				alert(" producto borrado del carrito.");
+				Toastify({
+					text: "producto borrado del carrito",
+					duration: 1000,
+					gravity: "top",
+					position: "center",
+					stopOnFocus: true,
+					style: { background: "linear-gradient(to right,#009FFD, #2A2A72)" },
+				}).showToast();
 				document.getElementById(ID).innerHTML = "";
 				calcularTotal();
 				cartStock();
@@ -84,7 +119,8 @@ function eliminarCart(ID) {
 		});
 }
 
-function comprar() {
+function comprar(e) {
+	e.currentTarget.disabled = true;
 	fetch("/carritos/comprar", {
 		method: "POST",
 		headers: {
@@ -95,10 +131,25 @@ function comprar() {
 		.then((data) => data.json())
 		.then((resp) => {
 			if (resp.mensaje == "compra realizada") {
-				alert("gracias por su compra...");
-				window.location.href = "/";
+				Toastify({
+					text: "gracias por su compra",
+					duration: 1500,
+					gravity: "top",
+					position: "center",
+					stopOnFocus: true,
+					style: { background: "linear-gradient(to right, #00b09b, #96c93d)" },
+				}).showToast();
+				setTimeout(() => (window.location.href = "/"), 2000);
 			} else {
-				alert(`${resp.mensaje}.Compra cancelada.`);
+				Toastify({
+					text: "compra cancelada",
+					duration: 1000,
+					gravity: "top",
+					position: "center",
+					stopOnFocus: true,
+					style: { background: "linear-gradient(to right, #009FFD, #2A2A72)" },
+				}).showToast();
+				e.currentTarget.disabled = false;
 			}
 		});
 }

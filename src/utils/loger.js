@@ -1,19 +1,49 @@
-const winston = require("winston");
+const { createLogger, transports, format } = require("winston");
+const { combine, timestamp, colorize, printf, label } = format;
 
-const logger = winston.createLogger({
+const customFormat = printf(({ label, level, message, timestamp }) => {
+	return `${label} [ ${timestamp} ] ${level}: ${message} `;
+});
+
+const logger = createLogger({
+	format: combine(
+		label({
+			label: "[LOGGER]",
+		}),
+		timestamp({
+			format: "DD-MM-YYYY HH:mm:ss",
+		}),
+		customFormat,
+		colorize({
+			all: true,
+		})
+	),
 	level: "info",
 	transports: [
-		new winston.transports.Console({ level: "info" }),
-		new winston.transports.File({ filename: "./src/utils/logs/warn.log", level: "warn" }),
-		new winston.transports.File({ filename: "./src/utils/logs/error.log", level: "error" }),
+		new transports.Console({ level: "info" }),
+		new transports.File({ filename: "./src/utils/logs/warn.log", level: "warn" }),
+		new transports.File({ filename: "./src/utils/logs/error.log", level: "error" }),
 	],
 });
 
-const loggerE = winston.createLogger({
+const loggerE = createLogger({
+	format: combine(
+		label({
+			label: "[LOGGER]",
+		}),
+
+		timestamp({
+			format: "DD-MM-YYYY HH:mm:ss",
+		}),
+		customFormat,
+		colorize({
+			all: true,
+		})
+	),
 	level: "error",
 	transports: [
-		new winston.transports.Console({ level: "error" }),
-		new winston.transports.File({ filename: "./src/utils/logs/error.log", level: "error" }),
+		new transports.Console({ level: "error" }),
+		new transports.File({ filename: "./src/utils/logs/error.log", level: "error" }),
 	],
 });
 module.exports = { logger, loggerE };

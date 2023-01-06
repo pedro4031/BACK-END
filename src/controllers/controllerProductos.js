@@ -2,6 +2,7 @@ const { logger } = require("../utils/loger");
 const {
 	obtenerProductos,
 	obtenerIdProducto,
+	obtenerCategoriaProductos,
 	agregarProducto,
 	actualizarProducto,
 	eliminarProducto,
@@ -26,6 +27,13 @@ function getByIdProd(req, res) {
 	obtenerIdProducto(id).then((resp) => res.json(resp));
 }
 
+//PRODUCTO POR CATEGORIA
+function getByCategory(req, res) {
+	logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
+	let { categoria } = req.params;
+	obtenerCategoriaProductos(categoria).then((resp) => res.json(resp));
+}
+
 //AGREGAR PRODUCTO
 function agregarProd(req, res) {
 	logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
@@ -48,4 +56,12 @@ function eliminarProd(req, res) {
 	eliminarProducto(id).then((resp) => res.json(resp));
 }
 
-module.exports = { getAlmacen, getProds, getByIdProd, agregarProd, actualizarProd, eliminarProd };
+module.exports = {
+	getAlmacen,
+	getProds,
+	getByIdProd,
+	getByCategory,
+	agregarProd,
+	actualizarProd,
+	eliminarProd,
+};

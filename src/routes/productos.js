@@ -15,6 +15,13 @@ routerProductos.get("/", middlewares.checkAuthentication, controllers.getProds);
 //GETBYID
 routerProductos.get("/:id", middlewares.checkAuthentication, controllers.getByIdProd);
 
+//GET BY CATEGORY
+routerProductos.get(
+	"/categorias/:categoria",
+	middlewares.checkAuthentication,
+	controllers.getByCategory
+);
+
 //POST PRODUCTO
 routerProductos.post(
 	"/",

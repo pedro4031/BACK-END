@@ -14,6 +14,6 @@ const ProductoSchema = new Schema(
 	{ versionKey: false }
 );
 
-const esquemaProducto = model("producto", ProductoSchema);
+const esquemaProducto = model("productos", ProductoSchema);
 
 module.exports = esquemaProducto;

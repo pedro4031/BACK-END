@@ -1,0 +1,29 @@
+{{>navbar}}
+
+<div class="container text-center my-4 p-5">
+
+<h1>Ordenes de compra</h1>
+
+{{#each ordenes}}
+
+<div class="card mx-auto my-5" style="width: 50rem; ">
+    <div class="card-header">
+        <strong>orden N°</strong> {{this._id}}
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>dia de la compra: </strong>{{this.timestamp}}</li>
+        <li class="list-group-item"><strong>mail:</strong> {{this.mail}}</li>
+        <li class="list-group-item"><strong>precio total:</strong> ${{this.precioTotal}}</li>
+        {{#each this.productos}}
+        <li class="list-group-item">{{this.nombre}} - {{this.cantidad}} x ${{this.precio}}</li>
+        {{/each}}
+    </ul>
+
+</div>
+
+
+{{/each}}
+
+</dir>
+
+{{>footer}}

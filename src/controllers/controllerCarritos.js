@@ -9,6 +9,9 @@ const {
 	comprarCarrito,
 } = require("../services/Carritos");
 
+const { carritoMongo } = require("../database/imports");
+const Carritos = new carritoMongo();
+
 //CREAR CARRITO
 async function createCart(req, res) {
 	logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
@@ -20,8 +23,8 @@ async function createCart(req, res) {
 function miCart(req, res) {
 	logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
 	const id = req.user._id;
-	miCarrito(id).then((resp) => {
-		res.render("carrito", resp);
+	miCarrito(id).then((prodsCart) => {
+		res.render("carrito", prodsCart);
 	});
 }
 
@@ -59,9 +62,16 @@ function deleteCart(req, res) {
 //COMPRAR CARRITO
 function buyCart(req, res) {
 	logger.info(`peticion a ruta ${req.originalUrl} con metodo ${req.method}`);
-	let idCart = req.user._id;
 	let productos = req.body;
-	comprarCarrito(idCart, productos, req.user).then((resp) => res.json(resp));
+	comprarCarrito(productos, req.user).then((resp) => {
+		res.json(resp);
+	});
+}
+
+//ORDENES
+function getOrdenes(req, res) {
+	let mail = req.user.username;
+	Carritos.getOrdenes(mail).then((data) => res.render("ordenes", { ordenes: data }));
 }
 
 module.exports = {
@@ -72,4 +82,5 @@ module.exports = {
 	addCart,
 	deleteCart,
 	buyCart,
+	getOrdenes,
 };

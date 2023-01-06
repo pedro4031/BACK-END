@@ -19,10 +19,33 @@ async function crearCarrito(id) {
 async function miCarrito(id) {
 	try {
 		let prods = await Carritos.getAll(id);
-		let estado;
-		prods.length > 0 ? (estado = true) : (estado = false);
+		let actualizar = false;
+		let estado = false;
+		let updatedProds = [];
 
-		return { productos: prods, exists: estado };
+		for (let i = 0; i < prods.length; i++) {
+			let prodUpdated = await almacenProductos.getById(prods[i]._id);
+			if (prodUpdated.mensaje == "producto no encontrado") continue;
+			if (JSON.stringify(prodUpdated) != JSON.stringify(prods[i])) {
+				actualizar = true;
+				updatedProds.push({
+					...prodUpdated,
+					cantidad: prods[i].cantidad,
+					precioTotal: parseFloat(prods[i].cantidad * prodUpdated.precio),
+				});
+			} else {
+				updatedProds.push(prods[i]);
+			}
+		}
+
+		if (updatedProds.length > 0) {
+			estado = true;
+			actualizar && (await Carritos.updateCart(id, updatedProds));
+		} else {
+			estado = false;
+		}
+
+		return { productos: updatedProds, exists: estado };
 	} catch (e) {
 		logger.warn("carrito vacio/no se encontraron los productos. " + e);
 		return { productos: [] };
@@ -54,7 +77,7 @@ async function guardarProdCarrito(idCart, idProd, cantProd) {
 	try {
 		let productoCart = await almacenProductos.getById(idProd);
 
-		let prodCart = { ...productoCart["0"]._doc };
+		let prodCart = { ...productoCart };
 		prodCart.cantidad = cantProd;
 		prodCart.precioTotal = parseFloat(cantProd * prodCart.precio);
 		return Carritos.save(idCart, prodCart);
@@ -82,31 +105,42 @@ async function borrarProdCarrito(id, idProd) {
 }
 
 //COMPRAR CARRITO
-async function comprarCarrito(idCart, productos, cliente) {
+async function comprarCarrito(productos, cliente) {
 	try {
-		let resp = await Carritos.deleteAll(idCart);
-		if (resp.mensaje == "carrito vaciado") {
-			let cuerpoMail = productos.reduce(
-				(cuerpo, datosProds) =>
-					cuerpo +
-					`<p>id: ${datosProds._id},nombre: ${datosProds.nombre},cantidad: ${datosProds.cantidad}</p>`,
-				"<h3>Lista de productos pedidos:</h3>"
-			);
-			sendMail(`Nuevo pedido de ${cliente.usuario}-mail: ${cliente.username}.`, cuerpoMail);
+		let cuerpoMail = productos.reduce(
+			(cuerpo, datosProds) =>
+				cuerpo +
+				`<p>id: ${datosProds._id},nombre: ${datosProds.nombre},cantidad: ${datosProds.cantidad}</p>`,
+			"<h3>Lista de productos pedidos:</h3>"
+		);
+		sendMail(`Nuevo pedido de [${cliente.usuario}] - mail: ${cliente.username}.`, cuerpoMail);
 
-			let cuerpoWpp = productos.reduce(
-				(cuerpo, datosProds) =>
-					cuerpo +
-					`/id:${datosProds._id}, nombre: ${datosProds.nombre}, cantidad: ${datosProds.cantidad}/ `,
-				`Nuevo pedido de ${cliente.usuario}-mail: ${cliente.username}. `
-			);
-			let numCliente = `${cliente.prefijo}${cliente.telefono}`;
-			sendWpp(config.TELEFONO_NOTIFICACIONES, cuerpoWpp);
-			sendWpp(numCliente, "compra realizada. Pedido en proceso");
-			return { mensaje: "compra realizada" };
-		} else {
-			return { mensaje: "no se logro la compra" };
+		let cuerpoWpp = productos.reduce(
+			(cuerpo, datosProds) =>
+				cuerpo +
+				`/id:${datosProds._id}, nombre: ${datosProds.nombre}, cantidad: ${datosProds.cantidad}/ `,
+			`Nuevo pedido de [${cliente.usuario}] - mail: ${cliente.username}. Productos:`
+		);
+		let numCliente = `${cliente.prefijo}${cliente.telefono}`;
+		sendWpp(config.TELEFONO_NOTIFICACIONES, cuerpoWpp);
+		sendWpp(numCliente, "compra realizada. Pedido en proceso");
+
+		await Carritos.deleteAll(cliente._id);
+
+		let precioTotal = 0;
+		for (let a = 0; a < productos.length; a++) {
+			precioTotal += productos[a].precioTotal;
 		}
+		let datosOrden = {
+			timestamp: new Date(),
+			productos: productos,
+			mail: cliente.username,
+			precioTotal,
+		};
+		let resp = await Carritos.saveOrden(datosOrden).then((data) => {
+			return data ? { mensaje: "compra realizada" } : { mensaje: "no se logro la compra" };
+		});
+		return resp;
 	} catch (e) {
 		loggerE.error("No se pudo vaciar el carrito." + e);
 		return { mensaje: "No se pudo vaciar el carrito", error: e };

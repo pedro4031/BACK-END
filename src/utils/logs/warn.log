@@ -1,0 +1,43 @@
+[33m[LOGGER] [ 27-12-2022 19:21:56 ] warn: peticion a ruta inexistente /ert con metodo GET [39m
+[33m[LOGGER] [ 27-12-2022 19:26:22 ] warn: peticion a ruta inexistente /ert con metodo GET [39m
+[33m[LOGGER] [ 27-12-2022 19:30:24 ] warn: pedido a ruta /productos/almacen con metodo GET no autorizada por admin@gmail.com. [39m
+[33m[LOGGER] [ 27-12-2022 19:30:27 ] warn: pedido a ruta /productos/almacen con metodo GET no autorizada por admin@gmail.com. [39m
+[33m[LOGGER] [ 27-12-2022 21:45:10 ] warn: peticion a ruta inexistente /favicon.ico con metodo GET [39m
+[33m[LOGGER] [ 27-12-2022 23:49:11 ] warn: peticion a ruta inexistente / con metodo POST [39m
+[33m[LOGGER] [ 27-12-2022 23:49:38 ] warn: peticion a ruta inexistente / con metodo POST [39m
+[33m[LOGGER] [ 27-12-2022 23:50:24 ] warn: peticion a ruta inexistente / con metodo POST [39m
+[33m[LOGGER] [ 29-12-2022 13:51:43 ] warn: peticion a ruta inexistente /favicon.ico con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:49:48 ] warn: peticion a ruta inexistente /productos/js/productos.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:49:48 ] warn: peticion a ruta inexistente /productos/css/styles.css con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:49:49 ] warn: peticion a ruta inexistente /productos/js/sesiones.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:49:49 ] warn: peticion a ruta inexistente /productos/js/carrito.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:53:52 ] warn: peticion a ruta inexistente /productos/css/styles.css con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:53:52 ] warn: peticion a ruta inexistente /productos/js/sesiones.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:53:52 ] warn: peticion a ruta inexistente /productos/js/productos.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:53:52 ] warn: peticion a ruta inexistente /productos/js/carrito.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:54:42 ] warn: peticion a ruta inexistente /productos/css/styles.css con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:54:42 ] warn: peticion a ruta inexistente /productos/js/sesiones.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:54:42 ] warn: peticion a ruta inexistente /productos/js/productos.js con metodo GET [39m
+[33m[LOGGER] [ 29-12-2022 15:54:42 ] warn: peticion a ruta inexistente /productos/js/carrito.js con metodo GET [39m
+[33m[LOGGER] [ 31-12-2022 17:29:58 ] warn: carrito vacio/no se encontraron los productos. TypeError: Assignment to constant variable. [39m
+[33m[LOGGER] [ 31-12-2022 19:02:49 ] warn: peticion a ruta inexistente /favicon.ico con metodo GET [39m
+[33m[LOGGER] [ 02-01-2023 17:49:35 ] warn: peticion a ruta inexistente /chat con metodo GET [39m
+[33m[LOGGER] [ 02-01-2023 17:49:59 ] warn: peticion a ruta inexistente /chat/ con metodo GET [39m
+[33m[LOGGER] [ 02-01-2023 17:49:59 ] warn: peticion a ruta inexistente /chat/css/styles.css con metodo GET [39m
+[33m[LOGGER] [ 02-01-2023 17:49:59 ] warn: peticion a ruta inexistente /chat/js/productos.js con metodo GET [39m
+[33m[LOGGER] [ 02-01-2023 17:49:59 ] warn: peticion a ruta inexistente /chat/js/sesiones.js con metodo GET [39m
+[33m[LOGGER] [ 02-01-2023 17:49:59 ] warn: peticion a ruta inexistente /chat/js/carrito.js con metodo GET [39m
+[33m[LOGGER] [ 05-01-2023 00:24:27 ] warn: peticion a ruta inexistente /getmessages con metodo POST [39m
+[33m[LOGGER] [ 05-01-2023 14:19:24 ] warn: peticion a ruta inexistente /favicon.ico con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 00:58:46 ] warn: peticion a ruta inexistente /favicon.ico con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 14:41:07 ] warn: pedido a ruta /productos/almacen con metodo GET no autorizada por usuario123@gmail.com. [39m
+[33m[LOGGER] [ 06-01-2023 16:20:39 ] warn: peticion a ruta inexistente /carrito/ordenes con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 16:20:40 ] warn: peticion a ruta inexistente /carrito/css/styles.css con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 16:20:40 ] warn: peticion a ruta inexistente /carrito/js/productos.js con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 16:20:40 ] warn: peticion a ruta inexistente /carrito/js/carrito.js con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 16:20:40 ] warn: peticion a ruta inexistente /carrito/js/sesiones.js con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 16:20:40 ] warn: peticion a ruta inexistente /carrito/handlebars.png con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 17:06:23 ] warn: peticion a ruta inexistente /chat con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 17:06:26 ] warn: peticion a ruta inexistente /chat con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 17:06:58 ] warn: peticion a ruta inexistente /chat con metodo GET [39m
+[33m[LOGGER] [ 06-01-2023 17:43:57 ] warn: peticion a ruta inexistente /rtyrt con metodo GET [39m

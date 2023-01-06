@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bCrypt = require("bcrypt");
-const Usuarios = require("../database/models/usuario");
+const esquemaUsuarios = require("../database/models/usuario");
 const { carritoMongo } = require("../database/imports");
 const { sendMail } = require("../utils/nodemailerConfig");
 const { logger } = require("../utils/loger");
@@ -15,12 +15,12 @@ function createHash(password) {
 	return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 
-//PASSPORT LOGIN
+//PASSPORT LOGIN STRATEGY
 
 passport.use(
 	"login",
 	new LocalStrategy((username, password, done) => {
-		Usuarios.findOne({ username }, (err, user) => {
+		esquemaUsuarios.findOne({ username }, (err, user) => {
 			if (err) return done(err);
 
 			if (!user) {
@@ -36,7 +36,7 @@ passport.use(
 	})
 );
 
-//PASSPORT SIGN UP
+//PASSPORT SIGN UP STRATEGY
 
 passport.use(
 	"signup",
@@ -45,13 +45,23 @@ passport.use(
 			passReqToCallback: true,
 		},
 		(req, username, password, done) => {
-			Usuarios.findOne({ username: username }, function (err, user) {
+			esquemaUsuarios.findOne({ username: username }, function (err, user) {
 				if (err) {
 					return done(err);
 				}
 
+				var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+				if (!username.match(pattern)) {
+					return done(null, false, { message: "El mail de usuario es inválido" });
+				}
+
 				if (user) {
 					return done(null, false, { message: "El mail de usuario ya existe" });
+				}
+
+				if (req.body.password2 != password) {
+					return done(null, false, { message: "Las contraseñas no coinciden" });
 				}
 
 				if (req.body.edad < 18) {
@@ -61,6 +71,7 @@ passport.use(
 				if (req.body.prefijo > 998) {
 					return done(null, false, { message: "El prefijo es inválido" });
 				}
+
 				if (req.body.prefijo.includes("+")) {
 					return done(null, false, { message: "Eliminar el simbolo '+'" });
 				}
@@ -75,14 +86,14 @@ passport.use(
 					telefono: req.body.telefono,
 					avatar: req.body.avatar,
 				};
-				Usuarios.create(newUser, (err, userWithId) => {
+				esquemaUsuarios.create(newUser, (err, userWithId) => {
 					if (err) {
 						return done(err);
 					}
 					logger.info("usuario nuevo registrado");
 
 					const CarritoNuevo = new carritoMongo();
-					CarritoNuevo.crear(userWithId["_id"]);
+					CarritoNuevo.crear(userWithId);
 
 					let cuerpo = `
 					<h3>Usuario nuevo:</h3>
@@ -106,7 +117,41 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-	Usuarios.findById(id, done);
+	esquemaUsuarios.findById(id, done);
 });
 
-module.exports = passport;
+//PASSPORT LOGIN FUNCTION
+
+function LOGIN(req, res, next) {
+	passport.authenticate("login", function (err, user, info) {
+		if (!user) {
+			return res.json({ success: false, message: "authentication failed", info: info.message });
+		}
+		req.login(user, (loginErr) => {
+			if (loginErr) {
+				return next(loginErr);
+			}
+			logger.info(`peticion a ruta /login con metodo POST`);
+			return res.json({ success: true, message: "authentication succeeded" });
+		});
+	})(req, res, next);
+}
+
+//PASSPORT SIGNUP FUNCTION
+
+function SIGNUP(req, res, next) {
+	passport.authenticate("signup", function (err, user, info) {
+		if (!user) {
+			return res.json({ success: false, message: "registration failed", info: info.message });
+		}
+		req.login(user, (loginErr) => {
+			if (loginErr) {
+				return next(loginErr);
+			}
+			logger.info(`peticion a ruta /signup con metodo POST`);
+			return res.json({ success: true, message: "registration succeeded" });
+		});
+	})(req, res, next);
+}
+
+module.exports = { LOGIN, SIGNUP, passport };

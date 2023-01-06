@@ -11,6 +11,6 @@ const UsuarioSchema = new Schema({
 	avatar: { type: String, required: true },
 });
 
-const Usuarios = model("usuarios", UsuarioSchema);
+const esquemaUsuarios = model("usuarios", UsuarioSchema);
 
-module.exports = Usuarios;
+module.exports = esquemaUsuarios;

@@ -19,13 +19,23 @@ class productosMongo {
 	async getById(ID) {
 		try {
 			const producto = await esquemaProducto.find({ _id: ID });
-
-			return producto.length == 0
-				? { mensaje: "almacen vacio / producto no encontrado" }
-				: producto;
+			return producto.length == 0 ? { mensaje: "producto no encontrado" } : producto[0]._doc;
 		} catch (e) {
 			loggerE.error("producto no encontrado. " + e);
 			return { mensaje: "producto no encontrado", error: e };
+		}
+	}
+
+	//PRODUCTOS POR CATEGORIA
+	async categories(categoria) {
+		try {
+			const productos = await esquemaProducto.find({ categoria: categoria });
+			return productos.length == 0
+				? { mensaje: "Categoria vacia/ categoria inexistente" }
+				: productos;
+		} catch (e) {
+			loggerE.error("categoria no encontrada. " + e);
+			return { mensaje: "categoria no encontrada.", error: e };
 		}
 	}
 

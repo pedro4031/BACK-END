@@ -26,4 +26,7 @@ routerCarritos.delete(
 //COMPRAR CARRITO
 routerCarritos.post("/comprar", middlewares.checkAuthentication, controllers.buyCart);
 
+//ORDENES
+routerCarritos.get("/ordenes", middlewares.checkAuthentication, controllers.getOrdenes);
+
 module.exports = routerCarritos;

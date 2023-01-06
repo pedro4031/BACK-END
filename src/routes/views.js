@@ -19,5 +19,3 @@ routerViews.get("*", controllers.getFailRoute);
 routerViews.post("*", controllers.getFailRoute);
 
 module.exports = routerViews;
-
-//routerFork.get('/api/randoms', routes.getRandom);

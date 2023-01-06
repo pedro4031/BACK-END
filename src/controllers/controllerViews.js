@@ -34,4 +34,10 @@ function getFailRoute(req, res) {
 	res.status(404).render("routing-error", {});
 }
 
-module.exports = { getBienvenida, getRoot, getPerfil, getInfo, getFailRoute };
+module.exports = {
+	getBienvenida,
+	getRoot,
+	getPerfil,
+	getInfo,
+	getFailRoute,
+};

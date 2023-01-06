@@ -1,0 +1,48 @@
+{{>navbar}}
+
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="tablaUsuarios" >
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" >Usuarios</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div id="users" class="list-group list-group-flush">
+    </div>
+  </div>
+</div>
+
+<div class="container text-center my-4 p-5">
+
+    <h1>Chats de Usuarios</h1>
+
+<div class="w-50 mx-auto mt-5">
+
+    <form action="" onsubmit="return msgg(event)">
+
+    <div class="input-group mb-3 ">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#tablaUsuarios">
+        Usuarios
+        </button>
+        <input id="mensaje" type="text" class="form-control" placeholder="Mensaje para usuario"  >
+        <button class="btn btn-outline-secondary" type="submit">Enviar</button>
+    </div>
+
+    </form>
+
+    <div id='chat-box' class='mx-auto p-2 border border-dark border-2 text-start '></div> 
+
+</div>
+
+</div>
+
+{{>footer}}
+
+<script>
+let infoCliente = {{{usuario}}}
+</script>
+<script src="./js/chat.js"></script>
+
+
+
+

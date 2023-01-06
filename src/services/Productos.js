@@ -23,6 +23,16 @@ async function obtenerIdProducto(id) {
 	}
 }
 
+//OBTENER PRODUCTO POR CATEGORIA
+async function obtenerCategoriaProductos(categoria) {
+	try {
+		return almacenProductos.categories(categoria);
+	} catch (e) {
+		loggerE.error("no se pudo buscar la categoria." + e);
+		return { mensaje: "no se pudo buscar la categoria de productos.", error: e };
+	}
+}
+
 //AGREGAR PRODUCTO AL ALMACEN
 async function agregarProducto(nuevoProd) {
 	try {
@@ -81,6 +91,7 @@ async function eliminarProducto(id) {
 module.exports = {
 	obtenerProductos,
 	obtenerIdProducto,
+	obtenerCategoriaProductos,
 	agregarProducto,
 	actualizarProducto,
 	eliminarProducto,

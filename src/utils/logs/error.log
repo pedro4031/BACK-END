@@ -1,0 +1,28 @@
+[31m[LOGGER] [ 27-12-2022 16:34:12 ] error: no se pudo conectar a la base de datos. MongoServerError: bad auth : Authentication failed. [39m
+[31m[LOGGER] [ 27-12-2022 16:40:48 ] error: no se pudo conectar a la base de datos. MongoServerError: bad auth : Authentication failed. [39m
+[31m[LOGGER] [ 27-12-2022 16:41:15 ] error: no se pudo conectar a la base de datos. MongoServerError: bad auth : Authentication failed. [39m
+[31m[LOGGER] [ 27-12-2022 16:43:35 ] error: no se envio el mail. Error: Invalid login: 535-5.7.8 Username and Password not accepted. Learn more at[39m
+[31m535 5.7.8  https://support.google.com/mail/?p=BadCredentials r20-20020a056830121400b0066c49ce8b77sm6843109otp.77 - gsmtp [39m
+[31m[LOGGER] [ 29-12-2022 13:53:29 ] error: producto no encontrado. CastError: Cast to ObjectId failed for value "eo" (type string) at path "_id" for model "producto" [39m
+[31m[LOGGER] [ 29-12-2022 15:49:49 ] error: producto no encontrado. CastError: Cast to ObjectId failed for value "handlebars.png" (type string) at path "_id" for model "productos" [39m
+[31m[LOGGER] [ 29-12-2022 15:53:52 ] error: producto no encontrado. CastError: Cast to ObjectId failed for value "handlebars.png" (type string) at path "_id" for model "productos" [39m
+[31m[LOGGER] [ 29-12-2022 15:54:43 ] error: producto no encontrado. CastError: Cast to ObjectId failed for value "handlebars.png" (type string) at path "_id" for model "productos" [39m
+[31m[LOGGER] [ 31-12-2022 17:43:05 ] error: No se pudo guardar el producto en el carrito.ReferenceError: Cannot access 'prodCart' before initialization [39m
+[31m[LOGGER] [ 31-12-2022 17:44:17 ] error: No se pudo guardar el producto en el carrito.TypeError: Cannot read properties of undefined (reading '_doc') [39m
+[31m[LOGGER] [ 31-12-2022 18:44:08 ] error: No se pudo vaciar el carrito.ReferenceError: idCart is not defined [39m
+[31m[LOGGER] [ 04-01-2023 14:31:41 ] error: no se pudo seleccionar la plantilla.ReferenceError: req is not defined [39m
+[31m[LOGGER] [ 04-01-2023 14:32:25 ] error: no se pudo seleccionar la plantilla.ReferenceError: req is not defined [39m
+[31m[LOGGER] [ 05-01-2023 13:35:13 ] error: no se guardó el mensaje. ValidationError: receiver: Path `receiver` is required. [39m
+[31m[LOGGER] [ 05-01-2023 13:35:13 ] error: no se guardó el mensaje. ValidationError: receiver: Path `receiver` is required. [39m
+[31m[LOGGER] [ 05-01-2023 15:20:01 ] error: no se encontraron los usuarios. MongoServerError: $not needs a regex or a document [39m
+[31m[LOGGER] [ 05-01-2023 15:20:19 ] error: no se encontraron los usuarios. MongoServerError: $not needs a regex or a document [39m
+[31m[LOGGER] [ 05-01-2023 15:21:53 ] error: no se encontraron los usuarios. MongoServerError: $not needs a regex or a document [39m
+[31m[LOGGER] [ 05-01-2023 15:23:34 ] error: no se encontraron los usuarios. MongoServerError: $not needs a regex or a document [39m
+[31m[LOGGER] [ 05-01-2023 15:24:44 ] error: no se encontraron los usuarios. MongoServerError: $not needs a regex or a document [39m
+[31m[LOGGER] [ 05-01-2023 15:26:07 ] error: no se encontraron los usuarios. MongoServerError: $not needs a regex or a document [39m
+[31m[LOGGER] [ 06-01-2023 15:11:04 ] error: no se encontraron los mensajes. ReferenceError: mensajes is not defined [39m
+[31m[LOGGER] [ 06-01-2023 15:11:13 ] error: no se encontraron los mensajes. ReferenceError: mensajes is not defined [39m
+[31m[LOGGER] [ 06-01-2023 16:42:47 ] error: No se pudo vaciar el carrito.TypeError: Assignment to constant variable. [39m
+[31m[LOGGER] [ 06-01-2023 16:45:18 ] error: No se pudo vaciar el carrito.TypeError: Assignment to constant variable. [39m
+[31m[LOGGER] [ 06-01-2023 17:40:49 ] error: no se pudo actualizar el producto. CastError: Cast to ObjectId failed for value "[object HTMLInputElement]" (type string) at path "_id" for model "productos" [39m
+[31m[LOGGER] [ 06-01-2023 17:41:38 ] error: no se pudo actualizar el producto. CastError: Cast to ObjectId failed for value "[object HTMLInputElement]" (type string) at path "_id" for model "productos" [39m

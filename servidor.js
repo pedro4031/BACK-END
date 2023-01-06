@@ -15,6 +15,7 @@ const routerFaker = require("./src/routes/faker");
 const routerProductos = require("./src/routes/productos");
 const routerSession = require("./src/routes/sesiones");
 const routerViews = require("./src/routes/views");
+const routerChat = require("./src/routes/chat");
 //Express
 const express = require("express");
 const app = express();
@@ -35,7 +36,7 @@ app.enable("trust proxy");
 //Configuracion Mongoose - verificar que se pueda conectar a la base de datos.
 mongoose
 	.connect(config.MONGODB_URL)
-	.then(() => logger.info("mongoDB conectado"))
+	.then(() => logger.info("mongoDB-Atlas conectado"))
 	.catch((e) => {
 		loggerE.error(`no se pudo conectar a la base de datos. ${e}`);
 		throw new Error("no se pudo conectar a la base de datos");
@@ -87,13 +88,37 @@ app.use(passport.session());
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
 
+let users = [];
+
+const { mensajesMongo } = require("./src/database/imports");
+
+const chats = new mensajesMongo();
+
+io.on("connection", function (socket) {
+	socket.on("user_connected", function (username) {
+		users[username] = socket.id;
+
+		io.emit("user_connected", username);
+	});
+
+	socket.on("user_message", function (data) {
+		let socketId = users[data.receiver];
+
+		io.to(socketId).emit("new_message", data);
+
+		chats.saveMsg(data);
+	});
+});
+
 async function test() {
 	//RUTAS
 	app.use("/productos", routerProductos);
 	app.use("/carritos", routerCarritos);
 	app.use(routerFaker);
 	app.use(routerSession);
+	app.use(routerChat);
 	app.use(routerViews);
+
 	//Prender servidor en diferentes modos
 
 	switch (config.MODO) {

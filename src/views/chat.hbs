@@ -1,0 +1,35 @@
+{{>navbar}}
+
+<div class="container text-center my-4 p-5">
+
+<h1>Chat con Administrador</h1>
+
+
+<div class="w-50 mx-auto mt-5">
+
+    <form action="" onsubmit="return msgg(event)">
+
+    <div class="input-group mb-3 ">
+        <input id="mensaje" type="text" class="form-control" placeholder="Mensaje para administrador"  >
+        <button class="btn btn-outline-secondary" >Enviar</button>
+    </div>
+
+    </form>
+
+    <div id='chat-box' class='mx-auto p-2 border border-dark border-2 text-start '></div> 
+
+<ul id="users"></ul>
+
+
+</div>
+
+</div>
+
+<script>
+let infoCliente = {{{usuario}}}
+</script>
+<script src="./js/chat.js"></script>
+
+
+
+{{>footer}}

@@ -1,7 +1,7 @@
 const { logger } = require("../utils/loger");
 
 function checkAdmin(req, res, next) {
-	if (req.user.username == "admin@gmail") {
+	if (req.user.username == "admin@gmail.com") {
 		next();
 	} else {
 		let metodo = req.method;
