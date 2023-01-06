@@ -1,5 +1,5 @@
 const { logger } = require("../utils/loger");
-const { getInfoProceso, getUserPerfil } = require("../services/Views");
+const { getInfoProceso, getUserPerfil } = require("../services/views");
 
 //BIENVENIDA
 function getBienvenida(req, res) {
