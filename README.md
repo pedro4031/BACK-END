@@ -1,1 +1,1 @@
-# BACK-END / Handlebars - Express - MongoDB - MySql - sqlite - passport - socket.io
+# BACK-END / Handlebars - Express - MongoDB - passport - socket.io - nodemailer
