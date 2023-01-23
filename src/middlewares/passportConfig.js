@@ -64,7 +64,7 @@ passport.use(
 					return done(null, false, { message: "Las contraseñas no coinciden" });
 				}
 
-				if (req.body.edad < 18) {
+				if (req.body.edad < 18&& req.body.edad > 100) {
 					return done(null, false, { message: "La edad es inválida" });
 				}
 
